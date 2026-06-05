@@ -34,7 +34,7 @@
   };
 
   /* ---------- state ---------- */
-  const state = { school: null, year: null, gender: null, emirate: 'All', cart: new Map(), wish: new Set() };
+  const state = { school: null, year: null, gender: null, emirate: 'All', activeStep: 'school', cart: new Map(), wish: new Set() };
 
   /* =====================================================
      UTILITY BAR rotation
@@ -193,14 +193,29 @@
      STEP transitions
      ===================================================== */
   function reveal(stepEl) { stepEl.classList.remove('is-locked'); stepEl.setAttribute('aria-hidden', 'false'); stepEl.classList.add('reveal'); }
+  // Single-step wizard: only the active step (or shop) is shown; the rest collapse into the progress bar + breadcrumb.
+  function goToStep(name, noScroll) {
+    state.activeStep = name;
+    ['school', 'year', 'gender', 'shop'].forEach((s) => {
+      const el = document.getElementById('step-' + s); if (!el) return;
+      const show = s === name;
+      el.classList.toggle('is-locked', !show);
+      el.setAttribute('aria-hidden', show ? 'false' : 'true');
+      if (show) { el.classList.remove('reveal'); void el.offsetWidth; el.classList.add('reveal'); }
+    });
+    setStepper();
+    if (!noScroll) setTimeout(() => {
+      const j = document.getElementById('journey'); if (!j) return;
+      const y = j.getBoundingClientRect().top + window.scrollY - 60; // clear the sticky header
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    }, 40);
+  }
   function setStepper() {
-    const cfg = [['school', !!state.school], ['year', !!state.year], ['gender', !!state.gender], ['shop', !!state.gender]];
-    const nextUndone = cfg.findIndex(([, d]) => !d);
-    cfg.forEach(([k, done], i) => {
-      const it = $(`.progress__step[data-step="${k}"]`);
-      if (!it) return;
-      it.classList.toggle('is-done', done && k !== 'shop');
-      it.classList.toggle('is-current', i === (nextUndone === -1 ? cfg.length - 1 : nextUndone));
+    const done = { school: !!state.school, year: !!state.year, gender: !!state.gender };
+    ['school', 'year', 'gender', 'shop'].forEach((k) => {
+      const it = $(`.progress__step[data-step="${k}"]`); if (!it) return;
+      it.classList.toggle('is-current', k === state.activeStep);
+      it.classList.toggle('is-done', !!done[k] && k !== state.activeStep);
     });
     updateCrumbs();
   }
@@ -223,20 +238,23 @@
     try { history.replaceState(null, '', q ? ('?' + q) : location.pathname); } catch (e) {}
   }
 
-  function selectSchool(s, noScroll) {
+  function selectSchool(s, silent) {
     if (!s) return; state.school = s; state.year = null; state.gender = null;
     $('#schoolResults').hidden = true; $('#schoolSearch').value = s.name; $('#schoolClear').hidden = false; $('#schoolSearch').setAttribute('aria-expanded', 'false');
     $('#ctxSchool').innerHTML = ctxRow(s, 'school');
-    renderYears();
-    reveal($('#step-year'));
-    $('#step-gender').classList.add('is-locked'); $('#step-shop').classList.add('is-locked');
-    setStepper(); updateURL();
-    if (!noScroll) $('#step-year').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    renderYears(); updateURL();
+    if (!silent) goToStep('year');
   }
   function ctxRow(s, changeStep) {
     return `<span class="ctxbanner__crest">${crestMarkup(s)}</span>
       <span class="ctxbanner__meta"><strong>${esc(s.name)}</strong><span>${esc(s.emirate)} · ${esc(s.curriculum)} curriculum</span></span>
-      <button class="ctxbanner__change" data-goto="${changeStep}">Change</button>`;
+      <button class="ctxbanner__change" data-goto="${changeStep}">Change school</button>`;
+  }
+  function ctxYearRow() {
+    const s = state.school; if (!s) return '';
+    return `<span class="ctxbanner__crest">${crestMarkup(s)}</span>
+      <span class="ctxbanner__meta"><strong>${esc(shortSchool(s.name))} · ${esc(state.year ? state.year.name : '')}</strong><span>${esc(s.emirate)} · ${esc(s.curriculum)} curriculum</span></span>
+      <button class="ctxbanner__change" data-goto="year">Change year</button>`;
   }
 
   /* STEP 2 — YEAR */
@@ -256,12 +274,11 @@
       </div>`).join('');
     $$('[data-year]', wrap).forEach((b) => (b.onclick = () => selectYear(b.dataset.year)));
   }
-  function selectYear(code, noScroll) {
+  function selectYear(code, silent) {
     state.year = YEARS.find((y) => y.code === code); state.gender = null;
-    renderYears();
-    reveal($('#step-gender')); $('#step-shop').classList.add('is-locked');
-    setStepper(); updateURL();
-    if (!noScroll) $('#step-gender').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    renderYears(); updateURL();
+    $('#ctxYear') && ($('#ctxYear').innerHTML = ctxYearRow());
+    if (!silent) goToStep('gender');
   }
 
   /* STEP 3 — GENDER */
@@ -291,23 +308,21 @@
       b.onclick = () => selectGender(b.dataset.g);
     });
   })();
-  function selectGender(g, noScroll) {
+  function selectGender(g, silent) {
     state.gender = g;
     $$('#genderTiles .gtile').forEach((t) => t.classList.toggle('is-on', t.dataset.g === g));
-    renderShop();
-    reveal($('#step-shop'));
-    setStepper(); updateURL();
-    if (!noScroll) $('#step-shop').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    renderShop(); updateURL();
+    if (!silent) goToStep('shop');
   }
   function applyDeeplink() {
     const p = new URLSearchParams(location.search);
-    const sl = p.get('school'); if (!sl) return;
-    const sc = SCHOOLS.find((s) => s.slug === sl); if (!sc) return;
+    const sl = p.get('school'); if (!sl) return false;
+    const sc = SCHOOLS.find((s) => s.slug === sl); if (!sc) return false;
     selectSchool(sc, true);
     const yc = p.get('year'); if (yc && YEARS.find((y) => y.code === yc)) selectYear(yc, true);
     const g = p.get('gender'); if (g && ['BOYS', 'GIRLS', 'UNISEX'].includes(g)) selectGender(g, true);
-    const target = state.gender ? '#step-shop' : state.year ? '#step-gender' : '#step-year';
-    setTimeout(() => { const el = document.querySelector(target); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+    goToStep(state.gender ? 'shop' : state.year ? 'gender' : 'school', false);
+    return true;
   }
 
   /* =====================================================
@@ -500,9 +515,9 @@
      ===================================================== */
   document.addEventListener('click', (e) => {
     const goto = e.target.closest('[data-goto]');
-    if (goto) { const id = 'step-' + (goto.dataset.goto === 'school' ? 'school' : goto.dataset.goto); document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
-    const st = e.target.closest('.stepper__item.is-done');
-    if (st) document.getElementById('step-' + st.dataset.step).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (goto) { e.preventDefault(); goToStep(goto.dataset.goto); return; }
+    const st = e.target.closest('.progress__step.is-done');
+    if (st) goToStep(st.dataset.step);
   });
 
   /* =====================================================
@@ -530,9 +545,19 @@
   /* =====================================================
      INIT
      ===================================================== */
+  function resetJourney() {
+    state.school = null; state.year = null; state.gender = null; state.emirate = 'All';
+    $('#schoolSearch').value = ''; $('#schoolClear').hidden = true; $('#schoolResults').hidden = true;
+    renderEmirateChips(); renderPopular();
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+    goToStep('school', true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  const brand = $('.brand'); if (brand) brand.addEventListener('click', (e) => { e.preventDefault(); resetJourney(); });
+
   renderEmirateChips();
   renderPopular();
   updateCart();
   refreshScrollers();
-  applyDeeplink();
+  if (!applyDeeplink()) goToStep('school', true);
 })();

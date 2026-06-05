@@ -244,8 +244,8 @@ html[dir=rtl] .carousel-arrow svg{transform:rotate(180deg)}
 .yeartile:hover{transform:translateY(-3px);box-shadow:var(--sh-elev);border-color:var(--stage,#E50056)}
 .yeartile:hover::before,.yeartile.is-on::before{opacity:1}
 .yeartile.is-on{border-color:var(--primary);background:var(--primary-light)}
-.yeartile__name{font-weight:800;font-size:16px;color:var(--ink);letter-spacing:-.01em}
-.yeartile__age{font-size:11px;color:var(--body);margin-top:4px}
+.yeartile__name{display:block;font-weight:800;font-size:16px;color:var(--ink);letter-spacing:-.01em}
+.yeartile__age{display:block;font-size:11px;color:var(--body);margin-top:4px}
 .yeartile.is-on::after{content:"✓";position:absolute;top:10px;inset-inline-end:10px;width:18px;height:18px;border-radius:50%;
   background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
 
