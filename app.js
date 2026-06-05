@@ -380,7 +380,6 @@
 
     renderThemes();
     renderCrossSell();
-    renderBrands();
     refreshScrollers();
   }
 
@@ -530,11 +529,6 @@
     }));
   }
 
-  function renderBrands() {
-    const brands = [...new Set(RAILS.flatMap((r) => r.items.map((i) => i.brand)).filter(Boolean))];
-    $('#brandStrip').innerHTML = '<span class="pcard__brand" style="align-self:center">Mum-approved brands</span>' +
-      brands.slice(0, 12).map((b) => `<span class="brandstrip__logo">${esc(b)}</span>`).join('');
-  }
 
   /* =====================================================
      CART
