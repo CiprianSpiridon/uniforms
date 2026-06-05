@@ -22,6 +22,7 @@
   const wireImgFallback = (root) => root.querySelectorAll('img').forEach((im) => im.addEventListener('error', () => im.replaceWith(phSpan()), { once: true }));
   const PLUS = '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>';
   const STAR = '<svg viewBox="0 0 24 24"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19l1-5.8L3.5 9l5.9-.9z"/></svg>';
+  const TRUCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>';
   const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>';
 
   /* deterministic demo discount / rating so the cards look like real Mumzworld cards */
@@ -90,16 +91,17 @@
      ===================================================== */
   function productCard(p, key) {
     const id = key || p.url || p.name;
-    const pr = promoFor(id, p.priceAed);
     const media = p.image
       ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`
       : SHIRT_SVG;
+    const disc = p.discountPct, was = p.originalPriceAed;
     const badges = [];
-    if (pr.disc) badges.push(`<span class="badge badge--disc">-${pr.disc}%</span>`);
+    if (disc) badges.push(`<span class="badge badge--disc">-${disc}%</span>`);
     if (p.tag) badges.push(`<span class="badge badge--tag">${esc(p.tag)}</span>`);
     const wished = state.wish.has(id) ? ' is-on' : '';
     const priceBits = `<span class="pcard__now">${money(p.priceAed)}</span>` +
-      (pr.was ? `<span class="pcard__was">${money(pr.was)}</span><span class="pcard__disc">-${pr.disc}%</span>` : '');
+      (was && disc ? `<span class="pcard__was">${money(was)}</span><span class="pcard__disc">-${disc}%</span>` : '');
+    const ratingRow = p.rating ? `<span class="pcard__rating">${STAR}<strong>${p.rating}</strong> <span>(${p.reviews || 0})</span></span>` : '';
     const li = document.createElement('li');
     li.className = 'pcard';
     li.innerHTML = `
@@ -112,9 +114,9 @@
       <div class="pcard__body">
         ${p.brand ? `<span class="pcard__brand">${esc(p.brand)}</span>` : ''}
         <span class="pcard__name">${esc(p.name)}</span>
-        <span class="pcard__rating">${STAR}<strong>${pr.rating}</strong> (${pr.reviews})</span>
+        ${ratingRow}
         <span class="pcard__price">${priceBits}</span>
-        <span class="pcard__deliver">🚚 by ${deliverDate()}</span>
+        <span class="pcard__deliver">${TRUCK} by ${deliverDate()}</span>
       </div>`;
     li.querySelector('[data-add]').onclick = () => addToCart({ id, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image });
     const w = li.querySelector('[data-wish]');
