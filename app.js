@@ -194,21 +194,29 @@
      ===================================================== */
   function reveal(stepEl) { stepEl.classList.remove('is-locked'); stepEl.setAttribute('aria-hidden', 'false'); stepEl.classList.add('reveal'); }
   // Single-step wizard: only the active step (or shop) is shown; the rest collapse into the progress bar + breadcrumb.
+  const STEP_IDS = ['school', 'year', 'gender', 'shop'];
   function goToStep(name, noScroll) {
+    const prev = STEP_IDS.map((s) => document.getElementById('step-' + s)).find((el) => el && !el.classList.contains('is-locked'));
+    const target = document.getElementById('step-' + name);
     state.activeStep = name;
-    ['school', 'year', 'gender', 'shop'].forEach((s) => {
-      const el = document.getElementById('step-' + s); if (!el) return;
-      const show = s === name;
-      el.classList.toggle('is-locked', !show);
-      el.setAttribute('aria-hidden', show ? 'false' : 'true');
-      if (show) { el.classList.remove('reveal'); void el.offsetWidth; el.classList.add('reveal'); }
-    });
-    setStepper();
-    if (!noScroll) setTimeout(() => {
-      const j = document.getElementById('journey'); if (!j) return;
-      const y = j.getBoundingClientRect().top + window.scrollY - 60; // clear the sticky header
-      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-    }, 40);
+    const swap = () => {
+      STEP_IDS.forEach((s) => {
+        const el = document.getElementById('step-' + s); if (!el) return;
+        const show = s === name;
+        el.classList.toggle('is-locked', !show);
+        el.classList.remove('is-leaving');
+        el.setAttribute('aria-hidden', show ? 'false' : 'true');
+        if (show) { el.classList.remove('reveal'); void el.offsetWidth; el.classList.add('reveal'); }
+      });
+      setStepper();
+      if (!noScroll) requestAnimationFrame(() => {
+        const j = document.getElementById('journey'); if (!j) return;
+        const y = j.getBoundingClientRect().top + window.scrollY - 60; // clear sticky header
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      });
+    };
+    if (prev && prev !== target && !noScroll) { prev.classList.add('is-leaving'); setTimeout(swap, 170); }
+    else swap();
   }
   function setStepper() {
     const done = { school: !!state.school, year: !!state.year, gender: !!state.gender };
@@ -330,6 +338,12 @@
      ===================================================== */
   const matchesYear = (years) => !years || !years.length || years.includes(state.year.code);
   const matchesGender = (g) => g === 'UNISEX' || g === state.gender;
+  // bundle/dedup helpers
+  const stripColour = (n) => n.toUpperCase().replace(/\b(WHT|WHITE|NAVY|ORNG|ORANGE|BLU|BLUE|RED|GRN|GREEN|BLK|BLACK|GREY|GRAY|MAROON|BURGUNDY|YELLOW|PINK|PURPLE)\b/g, '').replace(/[\/,\-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const garmentType = (n) => { const N = n.toUpperCase(); if (/POLO|SHIRT|BLOUSE|\bTOP\b|TEE|JUMPER|SWEATER|CARDIGAN/.test(N)) return 'top'; if (/PANT|TROUSER|SHORT|SKORT|SKIRT|PINAFORE|BOTTOM/.test(N)) return 'bottom'; if (/JACKET|COAT|FLEECE|WINTER/.test(N)) return 'outer'; if (/SOCK/.test(N)) return 'socks'; return 'other'; };
+  const dedupBase = (items) => { const seen = new Set(); return items.filter((it) => { const k = stripColour(it.name); if (seen.has(k)) return false; seen.add(k); return true; }); };
+  const oneEachType = (items) => { const by = {}; items.forEach((it) => { const t = garmentType(it.name); if (!by[t]) by[t] = it; }); return Object.values(by); };
+  const colourCount = (items, base) => items.filter((it) => stripColour(it.name) === base).length;
 
   function uniformsForSelection() {
     return UNIFORMS.filter((p) => matchesYear(p.years) && matchesGender(p.gender));
@@ -346,49 +360,68 @@
     $('#uniformBannerTitle').textContent = `${state.year.name} ${cap(state.gender)} uniform`;
 
     renderBundles();
-    // uniform rail
+    // uniform rail (collapse colourways into one card with a “N colours” tag)
     const rail = $('#uniformRail');
-    const items = uniformsForSelection();
+    const raw = uniformsForSelection();
+    const items = dedupBase(raw).map((p) => { const c = colourCount(raw, stripColour(p.name)); return c > 1 ? { ...p, tag: p.tag || (c + ' colours') } : p; });
     rail.innerHTML = '';
     if (items.length) items.forEach((p) => rail.appendChild(productCard(p, p.url)));
-    else rail.innerHTML = `<li class="schoolpick__noresult">Full range for ${esc(state.year.name)} is on the school page — tap “View all”.</li>`;
+    else rail.innerHTML = `<li class=”schoolpick__noresult”>Full range for ${esc(state.year.name)} is on the school page — tap “View all”.</li>`;
 
     renderCrossSell();
     renderBrands();
     refreshScrollers();
   }
 
+  let bundleDefs = [];
   function renderBundles() {
-    const core = UNIFORMS.filter((p) => p.uniformType === 'CORE UNIFORM' && matchesYear(p.years) && matchesGender(p.gender));
-    const pe = UNIFORMS.filter((p) => p.uniformType === 'PE' && matchesYear(p.years) && matchesGender(p.gender));
-    const winter = UNIFORMS.filter((p) => p.uniformType === 'WINTER UNIFORM' && matchesYear(p.years) && matchesGender(p.gender));
-    const essRail = activeRails().find((r) => r.key === 'lunch-hydration' || r.key === 'name-labels');
-    const ess = essRail ? essRail.items.slice(0, 3) : [];
+    const ym = (p) => matchesYear(p.years) && matchesGender(p.gender);
+    const core = UNIFORMS.filter((p) => p.uniformType === 'CORE UNIFORM' && ym(p));
+    const peAll = UNIFORMS.filter((p) => p.uniformType === 'PE' && ym(p));
+    const pe = dedupBase(peAll);          // one PE polo (not 4 colourways) + track bottoms
+    const rails = activeRails();
+    const lunch = (rails.find((r) => r.key === 'lunch-hydration') || { items: [] }).items;
+    const labels = (rails.find((r) => r.key === 'name-labels') || { items: [] }).items;
+    const lunchBox = lunch.find((x) => /lunch|bento|box/i.test(x.name)) || lunch[0];
+    const bottle = lunch.find((x) => /bottle|tumbler|water|sipper/i.test(x.name)) || lunch[1];
+    const essentials = [lunchBox, bottle, labels[0]].filter(Boolean);
 
-    const defs = [
-      { tag: 'Most popular', name: 'Complete uniform bundle', desc: `Every core ${cap(state.gender).toLowerCase()} item for ${state.year.name}.`, items: core },
-      { tag: 'PE ready', name: 'PE kit', desc: 'Sports polo, shorts & track basics.', items: pe },
-      { tag: 'Winter', name: 'Winter set', desc: 'Stay-warm layers for cooler months.', items: winter },
-      { tag: 'First day', name: 'First-day essentials', desc: 'Lunch, hydration & name labels from Mumzworld.', items: ess }
-    ].filter((d) => d.items.length);
+    bundleDefs = [
+      { tag: 'Most popular', name: 'Complete uniform', blurb: `Core ${cap(state.gender).toLowerCase()} kit for ${state.year.name}`, items: oneEachType(core), kind: 'uniform' },
+      { tag: 'PE ready', name: 'PE kit', blurb: 'Sports polo + track bottoms', items: pe.slice(0, 3), kind: 'uniform' },
+      { tag: 'First day', name: 'First-day essentials', blurb: 'Lunch box, water bottle & name labels', items: essentials, kind: 'mumz' }
+    ].filter((d) => d.items.length >= 2);
 
-    $('#bundlePicks').innerHTML = defs.map((d, i) => {
-      const sum = d.items.reduce((t, x) => t + x.priceAed, 0);
-      const save = d.items.length >= 2;
-      const now = save ? Math.round(sum * 0.9 * 100) / 100 : sum;
-      return `<div class="pick">
-        <span class="pick__tag">${esc(d.tag)}</span>
-        <span class="pick__name">${esc(d.name)}</span>
-        <span class="pick__desc">${esc(d.desc)} <em>${d.items.length} item${d.items.length > 1 ? 's' : ''}</em></span>
-        <span class="pick__price"><span class="pick__now">${money(now)}</span>${save ? `<span class="pick__was">${money(sum)}</span><span class="pick__save">Save 10%</span>` : ''}</span>
-        <button class="btn btn--primary" data-bundle="${i}">Add bundle</button>
-      </div>`;
-    }).join('') || `<p class="schoolpick__noresult">Bundles for this selection are on the school page.</p>`;
+    const priceOf = (d) => {
+      const total = d.items.reduce((t, x) => t + x.priceAed, 0);
+      const wasSum = d.items.reduce((t, x) => t + (x.originalPriceAed || x.priceAed), 0);
+      if (wasSum > total + 0.5) return { now: total, was: wasSum, save: Math.round((wasSum - total) * 100) / 100, real: true };
+      const now = Math.round(total * 0.9 * 100) / 100;
+      return { now, was: total, save: Math.round((total - now) * 100) / 100, real: false };
+    };
+    const thumb = (it) => it.image ? `<span class="pick__thumb"><img src="${esc(it.image)}" alt=""></span>` : `<span class="pick__thumb">${SHIRT_SVG}</span>`;
+
+    $('#bundlePicks').innerHTML = bundleDefs.map((d, i) => {
+      const pr = priceOf(d);
+      const list = d.items.map((it) => esc(it.name.split(' - ')[0].split(',')[0].replace(/^ABS\s+(UX\s+)?/i, ''))).slice(0, 3).join(' · ');
+      return `<article class="pick">
+        <div class="pick__media">${d.items.slice(0, 4).map(thumb).join('')}<span class="pick__save">Save ${money(pr.save)}</span></div>
+        <div class="pick__info">
+          <span class="pick__tag">${esc(d.tag)}</span>
+          <h3 class="pick__name">${esc(d.name)}</h3>
+          <p class="pick__list">${list}</p>
+          <div class="pick__price"><span class="pick__now">${money(pr.now)}</span><span class="pick__was">${money(pr.was)}</span></div>
+          <button class="btn btn--primary btn--block" data-bundle="${i}">Add ${d.items.length} items</button>
+        </div>
+      </article>`;
+    }).join('') || `<p class="schoolpick__noresult">Bundles appear once we have the kit for this selection.</p>`;
 
     $$('#bundlePicks [data-bundle]').forEach((b) => (b.onclick = () => {
-      defs[+b.dataset.bundle].items.forEach((p) => addToCart({ id: p.url || p.name, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image }, true));
-      toast(`Added ${defs[+b.dataset.bundle].name} to bag`); updateCart();
+      const d = bundleDefs[+b.dataset.bundle];
+      d.items.forEach((p) => addToCart({ id: p.url || p.name, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image }, true));
+      toast(`Added ${d.name} (${d.items.length} items) to bag`); updateCart();
     }));
+    wireImgFallback($('#bundlePicks'));
   }
 
   function activeRails() {
