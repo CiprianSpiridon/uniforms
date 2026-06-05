@@ -25,13 +25,38 @@
   const TRUCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3z"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>';
   const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>';
 
-  /* deterministic demo discount / rating so the cards look like real Mumzworld cards */
-  const promoFor = (key, price) => {
-    const h = hash(key);
-    const out = { rating: (4.2 + (h % 8) / 10).toFixed(1), reviews: 15 + (h % 480) };
-    if (h % 100 < 55) { const d = 10 + (h % 6) * 5; out.disc = d; out.was = Math.round((price / (1 - d / 100)) * 100) / 100; }
-    return out;
-  };
+  /* ---------- title-case + retail product naming ---------- */
+  const SMALL = new Set(['and', 'or', 'the', 'of', 'for', 'with', 'a', 'an', 'to', 'in']);
+  const tc = (raw) => String(raw || '').toLowerCase().replace(/\s+/g, ' ').trim()
+    .split(' ').map((w, i) => {
+      if (w === '-' || w === '·' || w === '&') return w;
+      if (i > 0 && SMALL.has(w)) return w;
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    }).join(' ').replace(/\bUae\b/g, 'UAE').replace(/\bFs\b/gi, 'FS').replace(/\bPe\b/g, 'PE');
+  const schoolName = (s) => tc(s.name);
+  const yearLabel = (y) => /^FS/i.test(y.name) ? y.name.toUpperCase().replace(/\s+/, ' ') : tc(y.name);
+  const COLOURS = { WHT: 'White', WHITE: 'White', NAVY: 'Navy', ORNG: 'Orange', ORANGE: 'Orange', BLU: 'Blue', BLUE: 'Blue', RED: 'Red', GRN: 'Green', GREEN: 'Green', BLK: 'Black', BLACK: 'Black', GREY: 'Grey', GRAY: 'Grey', MAROON: 'Maroon', BURGUNDY: 'Burgundy' };
+  function prettyName(raw) {
+    let s = ' ' + String(raw).toUpperCase() + ' ';
+    s = s.replace(/^\s+[A-Z]{2,4}\s+/, ' ');               // school code prefix (ABS)
+    s = s.replace(/\bUX\b/g, ' ');                          // unisex code
+    s = s.replace(/\b(FS\s?\d|YEAR\s?\d{1,2}|Y\s?\d{1,2})\s*[-/]\s*(FS\s?\d|YEAR\s?\d{1,2}|Y?\s?\d{1,2})\b/g, ' ');
+    s = s.replace(/\b(FS\s?\d|Y\d{1,2})\b/g, ' ');
+    const colours = [];
+    s = s.replace(/\b([A-Z]{2,6})\/([A-Z]{2,6})\b/g, (m, a, b) => { if (COLOURS[a] && COLOURS[b]) { colours.push(COLOURS[a] + '/' + COLOURS[b]); return ' '; } return m; });
+    Object.keys(COLOURS).forEach((k) => { const re = new RegExp('\\b' + k + '\\b', 'g'); if (re.test(s)) { colours.push(COLOURS[k]); s = s.replace(re, ' '); } });
+    let g = s.replace(/\s+/g, ' ').trim()
+      .replace(/SS BLOUSE/, 'Short-Sleeve Blouse').replace(/SS SHIRT/, 'Short-Sleeve Shirt')
+      .replace(/TRACK PANTS/, 'Track Pants').replace(/PE POLO/, 'PE Polo').replace(/WINTER JACKET/, 'Winter Jacket')
+      .replace(/DIVIDED SKORT/, 'Divided Skort').replace(/\bPANTS\b/, 'Trousers').replace(/\bPOLO\b/, 'Polo Shirt')
+      .replace(/\bSHIRT\b/, 'Shirt').replace(/\bBLOUSE\b/, 'Blouse').replace(/\bSKORT\b/, 'Skort').replace(/\bSKIRT\b/, 'Skirt')
+      .replace(/\bGIRLS\b/, "Girls'").replace(/\bBOYS\b/, "Boys'");
+    g = g.split(' ').map((w) => /[a-z']/.test(w) ? w : (w.charAt(0) + w.slice(1).toLowerCase())).join(' ').replace(/\s+/g, ' ').trim().replace(/\bPe\b/g, 'PE');
+    const colour = [...new Set(colours)].join(' / ');
+    return colour ? `${g} — ${colour}` : g;
+  }
+  // Humanise raw uniform SKU names once at load (cross-sell items already have retail names).
+  UNIFORMS.forEach((p) => { p.sku = p.sku || ''; p.name = prettyName(p.name); });
 
   /* ---------- state ---------- */
   const state = { school: null, year: null, gender: null, emirate: 'All', activeStep: 'school', theme: null, cart: new Map(), wish: new Set() };
@@ -55,35 +80,43 @@
       { eyebrow: '70+ UAE schools', title: 'Official, school-approved uniforms', sub: 'From FS 1 to Year 13 — across Dubai, Abu Dhabi, Sharjah and beyond.', bg: 'radial-gradient(120% 140% at 85% 15%,#12b06a 0%,#009246 55%,#0a6e4f 100%)', cta: 'Get started' }
     ];
     const track = $('#heroTrack'), dots = $('#heroDots');
-    track.innerHTML = slides.map((s) => `
-      <div class="hero__slide" style="background:${s.bg}" role="group" aria-roledescription="slide">
+    track.innerHTML = slides.map((s, i) => `
+      <div class="hero__slide" style="background:${s.bg}" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${slides.length}">
         <div class="hero__deco" aria-hidden="true"><span></span><span></span><span></span></div>
         <div class="hero__slide-content">
           <span class="hero__eyebrow">${esc(s.eyebrow)}</span>
-          <h1 class="hero__title">${esc(s.title)}</h1>
+          ${i === 0 ? `<h1 class="hero__title">${esc(s.title)}</h1>` : `<div class="hero__title" role="heading" aria-level="2">${esc(s.title)}</div>`}
           <p class="hero__sub">${esc(s.sub)}</p>
           <div class="hero__cta"><button class="btn btn--primary" data-hero-cta>${esc(s.cta)} →</button></div>
         </div>
       </div>`).join('');
-    dots.innerHTML = slides.map((_, i) => `<button role="tab" aria-label="Slide ${i + 1}"></button>`).join('');
+    dots.innerHTML = slides.map((_, i) => `<button role="tab" aria-label="Go to slide ${i + 1}" aria-selected="false"></button>`).join('');
     const dotEls = $$('button', dots);
+    const slideEls = $$('.hero__slide', track);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let idx = 0, timer;
     const go = (n) => {
       idx = (n + slides.length) % slides.length;
       track.style.transform = `translateX(${document.dir === 'rtl' ? '' : '-'}${idx * 100}%)`;
-      dotEls.forEach((d, i) => d.classList.toggle('is-on', i === idx));
+      dotEls.forEach((d, i) => { const on = i === idx; d.classList.toggle('is-on', on); d.setAttribute('aria-selected', on ? 'true' : 'false'); });
+      slideEls.forEach((sl, i) => { const on = i === idx; sl.setAttribute('aria-hidden', on ? 'false' : 'true'); const cta = sl.querySelector('[data-hero-cta]'); if (cta) cta.tabIndex = on ? 0 : -1; });
     };
-    const auto = () => { clearInterval(timer); timer = setInterval(() => go(idx + 1), 5000); };
+    const auto = () => { clearInterval(timer); if (reduce) return; timer = setInterval(() => go(idx + 1), 5000); };
+    const stop = () => clearInterval(timer);
     $('#heroNext').onclick = () => { go(idx + 1); auto(); };
     $('#heroPrev').onclick = () => { go(idx - 1); auto(); };
     dotEls.forEach((d, i) => (d.onclick = () => { go(i); auto(); }));
     track.addEventListener('click', (e) => { if (e.target.closest('[data-hero-cta]')) startJourney(); });
+    const hero = $('.hero'); if (hero) { hero.addEventListener('pointerenter', stop); hero.addEventListener('focusin', stop); hero.addEventListener('pointerleave', auto); hero.addEventListener('focusout', auto); }
     go(0); auto();
   })();
 
   function startJourney() {
-    document.getElementById('step-school').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => $('#schoolSearch').focus(), 400);
+    const j = document.getElementById('journey'), hdr = document.querySelector('.site-header');
+    const off = (hdr ? hdr.offsetHeight : 64) + 10;
+    if (j) window.scrollTo({ top: Math.max(0, j.getBoundingClientRect().top + window.scrollY - off), behavior: 'smooth' });
+    // focus the search only on larger screens, after the scroll settles (avoids the mobile keyboard covering a just-scrolled field)
+    setTimeout(() => { const inp = $('#schoolSearch'); if (inp && window.innerWidth > 640) inp.focus(); }, 520);
   }
 
   /* =====================================================
@@ -103,8 +136,6 @@
       (was && disc ? `<span class="pcard__was">${money(was)}</span><span class="pcard__disc">-${disc}%</span>` : '');
     const ratingRow = p.rating ? `<span class="pcard__rating">${STAR}<strong>${p.rating}</strong> <span>(${p.reviews || 0})</span></span>` : '';
     const bnpl = p.priceAed >= 40 ? `<span class="pcard__bnpl">or 4 × ${money(p.priceAed / 4)} with <b>tabby</b></span>` : '';
-    const low = (hash(id) % 4 === 0) ? (2 + (hash(id) % 4)) : 0;
-    const scarcity = low ? `<span class="pcard__stock">Only ${low} left</span>` : '';
     const li = document.createElement('li');
     li.className = 'pcard';
     li.innerHTML = `
@@ -121,9 +152,8 @@
         <span class="pcard__price">${priceBits}</span>
         ${bnpl}
         <span class="pcard__deliver">${TRUCK} by ${deliverDate()}</span>
-        ${scarcity}
       </div>`;
-    li.querySelector('[data-add]').onclick = () => addToCart({ id, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image });
+    li.querySelector('[data-add]').onclick = () => addToCart({ id, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image, was: p.originalPriceAed });
     const w = li.querySelector('[data-wish]');
     w.onclick = () => { state.wish.has(id) ? state.wish.delete(id) : state.wish.add(id); w.classList.toggle('is-on'); };
     wireImgFallback(li);
@@ -155,9 +185,9 @@
     const ordered = [...list].sort((a, b) => (b.hasLogo - a.hasLogo) || a.name.localeCompare(b.name)).slice(0, 24);
     const ul = $('#popularSchools');
     ul.innerHTML = ordered.map((s) => `
-      <li><button class="crest" data-school="${s.id}" title="${esc(s.name)}">
+      <li><button class="crest" data-school="${s.id}" title="${esc(schoolName(s))}">
         <span class="crest__badge">${crestMarkup(s)}</span>
-        <span class="crest__name">${esc(s.name)}</span>
+        <span class="crest__name">${esc(schoolName(s))}</span>
         <span class="crest__loc">${esc(s.emirate)}</span>
       </button></li>`).join('');
     $$('[data-school]', ul).forEach((b) => (b.onclick = () => selectSchool(SCHOOLS.find((s) => s.id == b.dataset.school))));
@@ -175,8 +205,8 @@
       if (!needle) return close();
       if (!current.length) { box.innerHTML = `<li class="schoolpick__noresult">No school matches “${esc(q)}”. Try another spelling.</li>`; box.hidden = false; input.setAttribute('aria-expanded', 'true'); return; }
       box.innerHTML = current.map((s, i) => {
-        const hl = s.name.replace(new RegExp('(' + needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>');
-        return `<li role="option" data-i="${i}"><span class="crest-sm">${crestMarkup(s)}</span><span><span class="r-name">${hl}</span><br><span class="r-meta">${esc(s.emirate)} · ${esc(s.curriculum)}</span></span></li>`;
+        const hl = esc(schoolName(s)).replace(new RegExp('(' + needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>');
+        return `<li role="option" id="school-opt-${i}" aria-selected="false" data-i="${i}"><span class="crest-sm">${crestMarkup(s)}</span><span><span class="r-name">${hl}</span><br><span class="r-meta">${esc(s.emirate)} · ${esc(s.curriculum)}</span></span></li>`;
       }).join('');
       box.hidden = false; input.setAttribute('aria-expanded', 'true'); active = -1;
       $$('li[role=option]', box).forEach((li) => (li.onclick = () => selectSchool(current[+li.dataset.i])));
@@ -188,7 +218,8 @@
       else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); }
       else if (e.key === 'Enter') { if (current[active]) { e.preventDefault(); selectSchool(current[active]); } else if (current[0]) { e.preventDefault(); selectSchool(current[0]); } return; }
       else if (e.key === 'Escape') { close(); return; }
-      opts.forEach((o, i) => o.classList.toggle('is-active', i === active));
+      opts.forEach((o, i) => { const on = i === active; o.classList.toggle('is-active', on); o.setAttribute('aria-selected', on ? 'true' : 'false'); });
+      input.setAttribute('aria-activedescendant', active >= 0 && opts[active] ? opts[active].id : '');
     });
     clear.onclick = () => { input.value = ''; close(); input.focus(); };
     document.addEventListener('click', (e) => { if (!e.target.closest('.schoolpick__search')) close(); });
@@ -216,8 +247,9 @@
       setStepper();
       if (!noScroll) requestAnimationFrame(() => {
         const j = document.getElementById('journey'); if (!j) return;
-        const y = j.getBoundingClientRect().top + window.scrollY - 60; // clear sticky header
-        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        const hdr = document.querySelector('.site-header');
+        const off = (hdr ? hdr.offsetHeight : 64) + 10; // clear the (taller-on-mobile) sticky header
+        window.scrollTo({ top: Math.max(0, j.getBoundingClientRect().top + window.scrollY - off), behavior: 'smooth' });
       });
     };
     if (prev && prev !== target && !noScroll) { prev.classList.add('is-leaving'); setTimeout(swap, 170); }
@@ -237,8 +269,8 @@
   function updateCrumbs() {
     const trail = $('#crumbTrail'); if (!trail) return;
     let h = '';
-    if (state.school) h += `<span class="crumbs__sep">/</span><a href="#step-school" class="crumbs__crumb" data-goto="school">${esc(shortSchool(state.school.name))}</a>`;
-    if (state.year) h += `<span class="crumbs__sep">/</span><a href="#step-year" class="crumbs__crumb" data-goto="year">${esc(state.year.name)}</a>`;
+    if (state.school) h += `<span class="crumbs__sep">/</span><a href="#step-school" class="crumbs__crumb" data-goto="school">${esc(tc(shortSchool(state.school.name)))}</a>`;
+    if (state.year) h += `<span class="crumbs__sep">/</span><a href="#step-year" class="crumbs__crumb" data-goto="year">${esc(yearLabel(state.year))}</a>`;
     if (state.gender) h += `<span class="crumbs__sep">/</span><a href="#step-gender" class="crumbs__crumb" data-goto="gender">${cap(state.gender)}</a>`;
     trail.innerHTML = h;
   }
@@ -253,20 +285,20 @@
 
   function selectSchool(s, silent) {
     if (!s) return; state.school = s; state.year = null; state.gender = null;
-    $('#schoolResults').hidden = true; $('#schoolSearch').value = s.name; $('#schoolClear').hidden = false; $('#schoolSearch').setAttribute('aria-expanded', 'false');
+    $('#schoolResults').hidden = true; $('#schoolSearch').value = schoolName(s); $('#schoolClear').hidden = false; $('#schoolSearch').setAttribute('aria-expanded', 'false');
     $('#ctxSchool').innerHTML = ctxRow(s, 'school');
     renderYears(); updateURL();
     if (!silent) goToStep('year');
   }
   function ctxRow(s, changeStep) {
     return `<span class="ctxbanner__crest">${crestMarkup(s)}</span>
-      <span class="ctxbanner__meta"><strong>${esc(s.name)}</strong><span>${esc(s.emirate)} · ${esc(s.curriculum)} curriculum</span></span>
+      <span class="ctxbanner__meta"><strong>${esc(schoolName(s))}</strong><span>${esc(s.emirate)} · ${esc(tc(s.curriculum))} curriculum</span></span>
       <button class="ctxbanner__change" data-goto="${changeStep}">Change school</button>`;
   }
   function ctxYearRow() {
     const s = state.school; if (!s) return '';
     return `<span class="ctxbanner__crest">${crestMarkup(s)}</span>
-      <span class="ctxbanner__meta"><strong>${esc(shortSchool(s.name))} · ${esc(state.year ? state.year.name : '')}</strong><span>${esc(s.emirate)} · ${esc(s.curriculum)} curriculum</span></span>
+      <span class="ctxbanner__meta"><strong>${esc(tc(shortSchool(s.name)))} · ${esc(state.year ? yearLabel(state.year) : '')}</strong><span>${esc(s.emirate)} · ${esc(tc(s.curriculum))} curriculum</span></span>
       <button class="ctxbanner__change" data-goto="year">Change year</button>`;
   }
 
@@ -290,6 +322,7 @@
   function selectYear(code, silent) {
     state.year = YEARS.find((y) => y.code === code); state.gender = null;
     renderYears(); updateURL();
+    $$('#genderTiles .gtile').forEach((t) => t.classList.remove('is-on')); // clear stale gender selection
     $('#ctxYear') && ($('#ctxYear').innerHTML = ctxYearRow());
     if (!silent) goToStep('gender');
   }
@@ -364,9 +397,9 @@
     state.theme = null;
     $('#ctxSummary').innerHTML = `
       <span class="ctxbanner__crest">${crestMarkup(s)}</span>
-      <span class="ctxbanner__meta"><strong>${esc(s.name)}</strong><span>${esc(state.year.name)} · ${cap(state.gender)} · ${esc(s.emirate)}</span></span>
-      <button class="ctxbanner__change" data-goto="school">Start over</button>`;
-    $('#uniformBannerTitle').textContent = `${state.year.name} ${cap(state.gender)} uniform`;
+      <span class="ctxbanner__meta"><strong>${esc(schoolName(s))}</strong><span>${esc(yearLabel(state.year))} · ${cap(state.gender)} · ${esc(s.emirate)}</span></span>
+      <button class="ctxbanner__change" data-goto="reset">Start over</button>`;
+    $('#uniformBannerTitle').textContent = `${yearLabel(state.year)} ${cap(state.gender)} uniform`;
 
     renderBundles();
     renderCollections();
@@ -400,13 +433,11 @@
     const peKit = pe.slice(0, 3);
 
     bundleDefs = [
-      { tag: 'Most popular', name: 'Complete uniform', items: completeUniform },
+      { tag: 'Essential kit', name: 'Complete uniform', items: completeUniform },
       { tag: 'Best value', name: 'Everything for day one', items: uniq([...completeUniform, peKit[0], bags[0], lunchBox, bottle, labels[0]].filter(Boolean)).slice(0, 6) },
       { tag: 'PE ready', name: 'PE kit', items: peKit },
       { tag: 'Stay warm', name: 'Winter warmer', items: uniq([...winter, trackPants].filter(Boolean)).slice(0, 3) },
-      { tag: 'First day', name: 'First-day essentials', items: [lunchBox, bottle, labels[0]].filter(Boolean) },
-      { tag: 'Lunch sorted', name: 'Lunch & hydration set', items: lunch.slice(0, 3) },
-      { tag: 'Desk ready', name: 'Stationery pack', items: stat.slice(0, 3) }
+      { tag: 'First day', name: 'First-day essentials', items: [lunchBox, bottle, labels[0]].filter(Boolean) }
     ].filter((d) => d.items.length >= 2);
     // de-dup identical bundles (e.g. lunch set vs essentials when labels missing)
     const seenSig = new Set();
@@ -415,26 +446,27 @@
     const priceOf = (d) => {
       const total = d.items.reduce((t, x) => t + x.priceAed, 0);
       const wasSum = d.items.reduce((t, x) => t + (x.originalPriceAed || x.priceAed), 0);
-      if (wasSum > total + 0.5) return { now: total, was: wasSum, save: Math.round((wasSum - total) * 100) / 100, real: true };
-      const now = Math.round(total * 0.9 * 100) / 100;
-      return { now, was: total, save: Math.round((total - now) * 100) / 100, real: false };
+      // Honest: only show a saving when items carry a real discount (which the cart actually charges).
+      if (wasSum > total + 0.5) return { now: total, was: wasSum, save: Math.round((wasSum - total) * 100) / 100 };
+      return { now: total, was: null, save: 0 };
     };
     const thumb = (it) => it.image ? `<span class="pick__thumb"><img src="${esc(it.image)}" alt=""></span>` : `<span class="pick__thumb">${SHIRT_SVG}</span>`;
 
     $('#bundlePicks').innerHTML = bundleDefs.map((d, i) => {
       const pr = priceOf(d);
-      const list = d.items.map((it) => esc(it.name.split(' - ')[0].split(',')[0].replace(/^ABS\s+(UX\s+)?/i, ''))).slice(0, 3).join(' · ');
+      const shortName = (it) => { const n = it.name.split(' — ')[0].split(' - ')[0].trim(); return esc(n.length > 26 ? n.slice(0, 24).trim() + '…' : n); };
+      const list = d.items.map(shortName).slice(0, 3).join(' · ') + (d.items.length > 3 ? ` +${d.items.length - 3} more` : '');
       const MAX = 4;
       const thumbsHtml = d.items.length > MAX
         ? d.items.slice(0, 3).map(thumb).join('') + `<span class="pick__moretile">+${d.items.length - 3}<small>more</small></span>`
         : d.items.map(thumb).join('');
       return `<article class="pick">
-        <div class="pick__media">${thumbsHtml}<span class="pick__save">Save ${money(pr.save)}</span></div>
+        <div class="pick__media">${thumbsHtml}${pr.save > 0 ? `<span class="pick__save">Save ${money(pr.save)}</span>` : ''}</div>
         <div class="pick__info">
           <span class="pick__tag">${esc(d.tag)}</span>
           <h3 class="pick__name">${esc(d.name)}</h3>
           <p class="pick__list">${list}</p>
-          <div class="pick__price"><span class="pick__now">${money(pr.now)}</span><span class="pick__was">${money(pr.was)}</span></div>
+          <div class="pick__price"><span class="pick__now">${money(pr.now)}</span>${pr.was ? `<span class="pick__was">${money(pr.was)}</span>` : ''}</div>
           <button class="btn btn--primary btn--block" data-bundle="${i}">Add ${d.items.length} items</button>
         </div>
       </article>`;
@@ -442,7 +474,7 @@
 
     $$('#bundlePicks [data-bundle]').forEach((b) => (b.onclick = () => {
       const d = bundleDefs[+b.dataset.bundle];
-      d.items.forEach((p) => addToCart({ id: p.url || p.name, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image }, true));
+      d.items.forEach((p) => addToCart({ id: p.url || p.name, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image, was: p.originalPriceAed }, true));
       toast(`Added ${d.name} (${d.items.length} items) to bag`); updateCart();
     }));
     wireImgFallback($('#bundlePicks'));
@@ -476,7 +508,7 @@
     const host = $('#crossSellRails');
     const rails = activeRails();
     const themeChip = state.theme ? `<button class="chip is-on" id="clearTheme">${esc(state.theme.name)} ✕</button>` : '';
-    const head = `<div class="container block"><div class="strip-head"><h2>Complete the new term</h2><p>Hand-picked Mumzworld extras for ${esc(state.year.name)} ${cap(state.gender)}. ${themeChip}</p></div></div>`;
+    const head = `<div class="container block"><div class="strip-head"><h2>Complete the new term</h2><p>Hand-picked Mumzworld extras for ${esc(yearLabel(state.year))} ${cap(state.gender)}. ${themeChip}</p></div></div>`;
     const N = 4, first = rails.slice(0, N), rest = rails.slice(N);
     host.innerHTML = head + first.map((r, i) => railBlockHTML(r, i)).join('')
       + (rest.length ? `<div id="moreRails" hidden>${rest.map((r, i) => railBlockHTML(r, i + N)).join('')}</div>
@@ -495,8 +527,9 @@
     const maxDisc = (items) => Math.max(0, ...items.map((i) => i.discountPct || 0));
     const repImg = (items) => (items.find((i) => i.image) || {}).image;
     const uni = uniformsForSelection();
-    const tiles = [{ title: 'The Uniform', hook: `${state.year.name} kit`, image: (uni.find((u) => u.image) || {}).image, target: '#uniformRail' }];
-    rails.forEach((r) => { const d = maxDisc(r.items); tiles.push({ title: r.title, hook: d ? `Up to ${d}% off` : 'Shop now', image: repImg(r.items), target: `[data-rail="${r.key}"]` }); });
+    const tiles = [{ title: 'The Uniform', hook: `${yearLabel(state.year)} kit`, image: (uni.find((u) => u.image) || {}).image, target: '#uniformRail' }];
+    const SUPPORTIVE = { 'period-care': 'Discreet & reusable', 'health-hygiene': 'School-day health' };
+    rails.forEach((r) => { const d = maxDisc(r.items); const hook = SUPPORTIVE[r.key] || (d ? `Up to ${d}% off` : 'Shop now'); tiles.push({ title: r.title, hook, image: repImg(r.items), target: `[data-rail="${r.key}"]` }); });
     host.innerHTML = `<div class="strip-head"><h2>Shop by category</h2><p>Jump straight to what you need.</p></div>
       <div class="ctiles">${tiles.map((t) => `<button class="ctile" data-scrollto='${t.target.replace(/'/g, '')}'>
         <span class="ctile__img">${t.image ? `<img src="${esc(t.image)}" alt="">` : SHIRT_SVG}</span>
@@ -515,7 +548,11 @@
     const host = $('#themeHost'); if (!host) return;
     if (!state.year || (state.year.stage !== 'Foundation' && state.year.stage !== 'Primary')) { host.innerHTML = ''; return; }
     const pool = activeRails().flatMap((r) => r.items.filter(ageOk));
-    const themes = THEME_KEYWORDS.map(([name, re]) => ({ name, re, items: pool.filter((p) => re.test(p.name)) })).filter((t) => t.items.length >= 2);
+    let themes = THEME_KEYWORDS.map(([name, re]) => ({ name, re, items: pool.filter((p) => re.test(p.name)) })).filter((t) => t.items.length >= 2);
+    if (state.gender === 'BOYS') themes = themes.filter((t) => !/princess|disney/i.test(t.name));
+    // de-dupe themes that resolve to the same hero image
+    const seenImg = new Set();
+    themes = themes.filter((t) => { const im = (t.items.find((i) => i.image) || {}).image || t.name; if (seenImg.has(im)) return false; seenImg.add(im); return true; });
     if (!themes.length) { host.innerHTML = ''; return; }
     host.innerHTML = `<div class="strip-head"><h2>Shop by character</h2><p>Find their favourite — taps filter the picks below.</p></div>
       <div class="themes">${themes.map((t) => `<button class="theme${state.theme && state.theme.name === t.name ? ' is-on' : ''}" data-theme="${esc(t.name)}">
@@ -540,17 +577,21 @@
   }
   function cartCount() { let n = 0; state.cart.forEach((e) => (n += e.qty)); return n; }
   function cartTotal() { let t = 0; state.cart.forEach((e) => (t += e.priceAed * e.qty)); return t; }
+  function cartSavings() { let s = 0; state.cart.forEach((e) => { if (e.was && e.was > e.priceAed) s += (e.was - e.priceAed) * e.qty; }); return s; }
   function updateCart() {
     const n = cartCount();
     const badge = $('#cartCount'); badge.textContent = n; badge.hidden = !n;
     $('#drawerCount').textContent = `(${n})`;
     $('#drawerSubtotal').textContent = money(cartTotal());
+    const sv = cartSavings(); const svEl = $('#drawerSavings');
+    if (svEl) { if (sv > 0) { svEl.hidden = false; svEl.innerHTML = `<span>You saved</span><strong>${money(sv)}</strong>`; } else svEl.hidden = true; }
     renderCartBody();
   }
   function renderCartBody() {
     const body = $('#drawerBody');
     if (!state.cart.size) {
-      body.innerHTML = `<div class="drawer__empty"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 2H2"/></svg><p>Your bag is empty.<br>Pick a school to get started.</p></div>`;
+      const msg = state.gender ? 'Add the uniform or a bundle to get started.' : 'Pick your school to see the uniform.';
+      body.innerHTML = `<div class="drawer__empty"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 2H2"/></svg><p>Your bag is empty.<br>${msg}</p></div>`;
       $('#drawerNudge').hidden = true; return;
     }
     body.innerHTML = '';
@@ -577,8 +618,13 @@
   }
   function renderNudge() {
     const nudge = $('#drawerNudge');
-    const pool = (state.gender ? activeRails() : RAILS).flatMap((r) => r.items);
-    const pick = pool.find((p) => !state.cart.has(p.url || p.name));
+    const rails = state.gender ? activeRails() : RAILS;
+    const inCart = (p) => state.cart.has(p.url || p.name);
+    const cartRailKeys = new Set();
+    rails.forEach((r) => r.items.forEach((it) => { if (inCart(it)) cartRailKeys.add(r.key); }));
+    // prefer a complement from a category not already in the bag
+    const fromNewCat = rails.filter((r) => !cartRailKeys.has(r.key)).flatMap((r) => r.items).filter((p) => !inCart(p));
+    const pick = fromNewCat[0] || rails.flatMap((r) => r.items).find((p) => !inCart(p));
     if (!pick) { nudge.hidden = true; return; }
     nudge.hidden = false;
     nudge.innerHTML = `<h4>Frequently bought together</h4>
@@ -587,12 +633,20 @@
         <div><strong>${esc(pick.name)}</strong><span class="np">${money(pick.priceAed)}</span></div>
         <button class="nudge-add" data-nudge>Add</button>
       </div>`;
-    nudge.querySelector('[data-nudge]').onclick = () => { addToCart({ id: pick.url || pick.name, name: pick.name, brand: pick.brand, priceAed: pick.priceAed, image: pick.image }); };
+    nudge.querySelector('[data-nudge]').onclick = () => { addToCart({ id: pick.url || pick.name, name: pick.name, brand: pick.brand, priceAed: pick.priceAed, image: pick.image, was: pick.originalPriceAed }); };
   }
   /* drawer open/close */
   const drawer = $('#cartDrawer'), scrim = $('#drawerScrim');
-  function openCart() { drawer.classList.add('is-open'); drawer.setAttribute('aria-hidden', 'false'); scrim.hidden = false; document.body.style.overflow = 'hidden'; }
-  function closeCart() { drawer.classList.remove('is-open'); drawer.setAttribute('aria-hidden', 'true'); scrim.hidden = true; document.body.style.overflow = ''; }
+  let lastFocused = null;
+  function openCart() { lastFocused = document.activeElement; drawer.classList.add('is-open'); drawer.setAttribute('aria-hidden', 'false'); scrim.hidden = false; document.body.style.overflow = 'hidden'; setTimeout(() => $('#drawerClose').focus(), 30); }
+  function closeCart() { drawer.classList.remove('is-open'); drawer.setAttribute('aria-hidden', 'true'); scrim.hidden = true; document.body.style.overflow = ''; if (lastFocused && lastFocused.focus) lastFocused.focus(); }
+  drawer.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const f = $$('button, a[href], input, [tabindex]:not([tabindex="-1"])', drawer).filter((el) => el.offsetParent !== null);
+    if (!f.length) return; const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
   $('#cartBtn').onclick = openCart; $('#drawerClose').onclick = closeCart; scrim.onclick = closeCart;
   $('#checkoutBtn').onclick = () => toast(state.cart.size ? 'Demo — checkout would open here' : 'Your bag is empty');
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCart(); });
@@ -624,7 +678,7 @@
      ===================================================== */
   document.addEventListener('click', (e) => {
     const goto = e.target.closest('[data-goto]');
-    if (goto) { e.preventDefault(); goToStep(goto.dataset.goto); return; }
+    if (goto) { e.preventDefault(); if (goto.dataset.goto === 'reset') resetJourney(); else goToStep(goto.dataset.goto); return; }
     const st = e.target.closest('.progress__step.is-done');
     if (st) goToStep(st.dataset.step);
   });
