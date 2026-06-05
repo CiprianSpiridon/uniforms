@@ -34,7 +34,7 @@
   };
 
   /* ---------- state ---------- */
-  const state = { school: null, year: null, gender: null, emirate: 'All', activeStep: 'school', cart: new Map(), wish: new Set() };
+  const state = { school: null, year: null, gender: null, emirate: 'All', activeStep: 'school', theme: null, cart: new Map(), wish: new Set() };
 
   /* =====================================================
      UTILITY BAR rotation
@@ -102,6 +102,9 @@
     const priceBits = `<span class="pcard__now">${money(p.priceAed)}</span>` +
       (was && disc ? `<span class="pcard__was">${money(was)}</span><span class="pcard__disc">-${disc}%</span>` : '');
     const ratingRow = p.rating ? `<span class="pcard__rating">${STAR}<strong>${p.rating}</strong> <span>(${p.reviews || 0})</span></span>` : '';
+    const bnpl = p.priceAed >= 40 ? `<span class="pcard__bnpl">or 4 × ${money(p.priceAed / 4)} with <b>tabby</b></span>` : '';
+    const low = (hash(id) % 4 === 0) ? (2 + (hash(id) % 4)) : 0;
+    const scarcity = low ? `<span class="pcard__stock">Only ${low} left</span>` : '';
     const li = document.createElement('li');
     li.className = 'pcard';
     li.innerHTML = `
@@ -116,7 +119,9 @@
         <span class="pcard__name">${esc(p.name)}</span>
         ${ratingRow}
         <span class="pcard__price">${priceBits}</span>
+        ${bnpl}
         <span class="pcard__deliver">${TRUCK} by ${deliverDate()}</span>
+        ${scarcity}
       </div>`;
     li.querySelector('[data-add]').onclick = () => addToCart({ id, name: p.name, brand: p.brand, priceAed: p.priceAed, image: p.image });
     const w = li.querySelector('[data-wish]');
@@ -344,6 +349,11 @@
   const dedupBase = (items) => { const seen = new Set(); return items.filter((it) => { const k = stripColour(it.name); if (seen.has(k)) return false; seen.add(k); return true; }); };
   const oneEachType = (items) => { const by = {}; items.forEach((it) => { const t = garmentType(it.name); if (!by[t]) by[t] = it; }); return Object.values(by); };
   const colourCount = (items, base) => items.filter((it) => stripColour(it.name) === base).length;
+  const uniq = (items) => { const s = new Set(); return items.filter((it) => { if (s.has(it.name)) return false; s.add(it.name); return true; }); };
+  // age curation: hide clearly-too-young items for primary+ shoppers
+  const ageOk = (it) => !(state.year && state.year.stage !== 'Foundation' && /(toddler|baby|infant|newborn|nursery)/i.test(it.name));
+  // rail merchandising order (attach-rate / relevance)
+  const RAIL_ORDER = ['lunch-hydration', 'backpacks-bags', 'shoes-socks', 'name-labels', 'stationery-supplies', 'books-learning', 'health-hygiene', 'period-care'];
 
   function uniformsForSelection() {
     return UNIFORMS.filter((p) => matchesYear(p.years) && matchesGender(p.gender));
@@ -351,6 +361,7 @@
 
   function renderShop() {
     const s = state.school;
+    state.theme = null;
     $('#ctxSummary').innerHTML = `
       <span class="ctxbanner__crest">${crestMarkup(s)}</span>
       <span class="ctxbanner__meta"><strong>${esc(s.name)}</strong><span>${esc(state.year.name)} · ${cap(state.gender)} · ${esc(s.emirate)}</span></span>
@@ -360,6 +371,7 @@
     $('#uniformBannerTitle').textContent = `${state.year.name} ${cap(state.gender)} uniform`;
 
     renderBundles();
+    renderCollections();
     // uniform rail (collapse colourways into one card with a “N colours” tag)
     const rail = $('#uniformRail');
     const raw = uniformsForSelection();
@@ -368,6 +380,7 @@
     if (items.length) items.forEach((p) => rail.appendChild(productCard(p, p.url)));
     else rail.innerHTML = `<li class=”schoolpick__noresult”>Full range for ${esc(state.year.name)} is on the school page — tap “View all”.</li>`;
 
+    renderThemes();
     renderCrossSell();
     renderBrands();
     refreshScrollers();
@@ -379,18 +392,28 @@
     const core = UNIFORMS.filter((p) => p.uniformType === 'CORE UNIFORM' && ym(p));
     const peAll = UNIFORMS.filter((p) => p.uniformType === 'PE' && ym(p));
     const pe = dedupBase(peAll);          // one PE polo (not 4 colourways) + track bottoms
+    const winter = dedupBase(UNIFORMS.filter((p) => p.uniformType === 'WINTER UNIFORM' && ym(p)));
     const rails = activeRails();
-    const lunch = (rails.find((r) => r.key === 'lunch-hydration') || { items: [] }).items;
-    const labels = (rails.find((r) => r.key === 'name-labels') || { items: [] }).items;
+    const railItems = (k) => (rails.find((r) => r.key === k) || { items: [] }).items;
+    const lunch = railItems('lunch-hydration'), labels = railItems('name-labels'), bags = railItems('backpacks-bags'), stat = railItems('stationery-supplies');
     const lunchBox = lunch.find((x) => /lunch|bento|box/i.test(x.name)) || lunch[0];
     const bottle = lunch.find((x) => /bottle|tumbler|water|sipper/i.test(x.name)) || lunch[1];
-    const essentials = [lunchBox, bottle, labels[0]].filter(Boolean);
+    const trackPants = pe.find((x) => /track|pant|jog/i.test(x.name));
+    const completeUniform = oneEachType(core);
+    const peKit = pe.slice(0, 3);
 
     bundleDefs = [
-      { tag: 'Most popular', name: 'Complete uniform', blurb: `Core ${cap(state.gender).toLowerCase()} kit for ${state.year.name}`, items: oneEachType(core), kind: 'uniform' },
-      { tag: 'PE ready', name: 'PE kit', blurb: 'Sports polo + track bottoms', items: pe.slice(0, 3), kind: 'uniform' },
-      { tag: 'First day', name: 'First-day essentials', blurb: 'Lunch box, water bottle & name labels', items: essentials, kind: 'mumz' }
+      { tag: 'Most popular', name: 'Complete uniform', items: completeUniform },
+      { tag: 'Best value', name: 'Everything for day one', items: uniq([...completeUniform, peKit[0], bags[0], lunchBox, bottle, labels[0]].filter(Boolean)).slice(0, 6) },
+      { tag: 'PE ready', name: 'PE kit', items: peKit },
+      { tag: 'Stay warm', name: 'Winter warmer', items: uniq([...winter, trackPants].filter(Boolean)).slice(0, 3) },
+      { tag: 'First day', name: 'First-day essentials', items: [lunchBox, bottle, labels[0]].filter(Boolean) },
+      { tag: 'Lunch sorted', name: 'Lunch & hydration set', items: lunch.slice(0, 3) },
+      { tag: 'Desk ready', name: 'Stationery pack', items: stat.slice(0, 3) }
     ].filter((d) => d.items.length >= 2);
+    // de-dup identical bundles (e.g. lunch set vs essentials when labels missing)
+    const seenSig = new Set();
+    bundleDefs = bundleDefs.filter((d) => { const sig = d.items.map((i) => i.name).sort().join('|'); if (seenSig.has(sig)) return false; seenSig.add(sig); return true; });
 
     const priceOf = (d) => {
       const total = d.items.reduce((t, x) => t + x.priceAed, 0);
@@ -425,27 +448,84 @@
   }
 
   function activeRails() {
-    return RAILS.filter((r) => r.appliesTo.years.includes(state.year.code) && r.appliesTo.genders.includes(state.gender));
+    return RAILS.filter((r) => r.appliesTo.years.includes(state.year.code) && r.appliesTo.genders.includes(state.gender))
+      .slice().sort((a, b) => RAIL_ORDER.indexOf(a.key) - RAIL_ORDER.indexOf(b.key));
+  }
+  const FILLS = ['lavender', 'blue', 'green', 'amber', 'pink'];
+  const ARROW_PREV = '<button class="carousel-arrow carousel-arrow--prev" data-scroll-prev aria-label="Scroll left" type="button"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>';
+  const ARROW_NEXT = '<button class="carousel-arrow carousel-arrow--next" data-scroll-next aria-label="Scroll right" type="button"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>';
+  function railBlockHTML(r, i) {
+    const seeAll = (r.sourceCategories && r.sourceCategories[0]) || '#';
+    return `<div class="container block">
+      <div class="themed-banner" data-fill="${FILLS[i % FILLS.length]}">
+        <div class="themed-banner__text"><strong>${esc(r.title)}</strong><span>${esc(r.subtitle || '')}</span></div>
+        <a class="themed-banner__link" href="${esc(seeAll)}" target="_blank" rel="noopener">See all →</a>
+      </div>
+      <div class="scroller" data-scroller>${ARROW_PREV}<ul class="scroller__track grid-rail" data-rail="${r.key}"></ul>${ARROW_NEXT}</div>
+    </div>`;
+  }
+  function fillRail(host, r) {
+    const ul = host.querySelector(`[data-rail="${r.key}"]`); if (!ul) return;
+    ul.innerHTML = '';
+    let items = r.items.filter(ageOk);
+    if (state.theme) items = items.filter((p) => state.theme.re.test(p.name));
+    (items.length ? items : r.items.filter(ageOk)).forEach((p) => ul.appendChild(productCard(p, p.url)));
   }
   function renderCrossSell() {
-    const fills = ['lavender', 'blue', 'green', 'amber', 'pink'];
     const host = $('#crossSellRails');
     const rails = activeRails();
-    host.innerHTML = rails.map((r, i) => `
-      <div class="container block">
-        <div class="themed-banner" data-fill="${fills[i % fills.length]}">
-          <div class="themed-banner__text"><strong>${esc(r.title)}</strong><span>${esc(r.subtitle || '')}</span></div>
-        </div>
-        <div class="scroller" data-scroller>
-          <button class="carousel-arrow carousel-arrow--prev" data-scroll-prev aria-label="Scroll left" type="button"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
-          <ul class="scroller__track grid-rail" data-rail="${r.key}"></ul>
-          <button class="carousel-arrow carousel-arrow--next" data-scroll-next aria-label="Scroll right" type="button"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
-        </div>
-      </div>`).join('');
-    rails.forEach((r) => {
-      const ul = host.querySelector(`[data-rail="${r.key}"]`);
-      r.items.forEach((p) => ul.appendChild(productCard(p, p.url)));
-    });
+    const themeChip = state.theme ? `<button class="chip is-on" id="clearTheme">${esc(state.theme.name)} ✕</button>` : '';
+    const head = `<div class="container block"><div class="strip-head"><h2>Complete the new term</h2><p>Hand-picked Mumzworld extras for ${esc(state.year.name)} ${cap(state.gender)}. ${themeChip}</p></div></div>`;
+    const N = 4, first = rails.slice(0, N), rest = rails.slice(N);
+    host.innerHTML = head + first.map((r, i) => railBlockHTML(r, i)).join('')
+      + (rest.length ? `<div id="moreRails" hidden>${rest.map((r, i) => railBlockHTML(r, i + N)).join('')}</div>
+         <div class="container"><button class="btn btn--ghost btn--block" id="moreRailsBtn">More for the new term (${rest.length}) ↓</button></div>` : '');
+    rails.forEach((r) => fillRail(host, r));
+    const mb = $('#moreRailsBtn');
+    if (mb) mb.onclick = () => { $('#moreRails').hidden = false; mb.parentElement.remove(); refreshScrollers(); };
+    const ct = $('#clearTheme');
+    if (ct) ct.onclick = () => { state.theme = null; renderThemes(); renderCrossSell(); refreshScrollers(); };
+  }
+
+  // ---- Curated collections: offer-hook category tiles ----
+  function renderCollections() {
+    const host = $('#collectionsHost'); if (!host) return;
+    const rails = activeRails().slice(0, 4);
+    const maxDisc = (items) => Math.max(0, ...items.map((i) => i.discountPct || 0));
+    const repImg = (items) => (items.find((i) => i.image) || {}).image;
+    const uni = uniformsForSelection();
+    const tiles = [{ title: 'The Uniform', hook: `${state.year.name} kit`, image: (uni.find((u) => u.image) || {}).image, target: '#uniformRail' }];
+    rails.forEach((r) => { const d = maxDisc(r.items); tiles.push({ title: r.title, hook: d ? `Up to ${d}% off` : 'Shop now', image: repImg(r.items), target: `[data-rail="${r.key}"]` }); });
+    host.innerHTML = `<div class="strip-head"><h2>Shop by category</h2><p>Jump straight to what you need.</p></div>
+      <div class="ctiles">${tiles.map((t) => `<button class="ctile" data-scrollto='${t.target.replace(/'/g, '')}'>
+        <span class="ctile__img">${t.image ? `<img src="${esc(t.image)}" alt="">` : SHIRT_SVG}</span>
+        <span class="ctile__t">${esc(t.title)}</span><span class="ctile__hook">${esc(t.hook)}</span></button>`).join('')}</div>`;
+    wireImgFallback(host);
+    $$('.ctile', host).forEach((b) => (b.onclick = () => { const el = document.querySelector(b.dataset.scrollto); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+  }
+
+  // ---- Shop by character (younger years) ----
+  const THEME_KEYWORDS = [
+    ['Unicorn', /unicorn/i], ['Animals', /animal|bunn|giraffe|llama|butterfly|dino|jungle|zoo|shark|mickey|fox/i],
+    ['Vehicles & Space', /vehicle|\bcar\b|plane|truck|space|rocket|dino/i], ['Princess & Disney', /disney|mickey|princess|frozen|rainbow/i],
+    ['Sporty', /puma|skechers|sport|football|camelbak/i]
+  ];
+  function renderThemes() {
+    const host = $('#themeHost'); if (!host) return;
+    if (!state.year || (state.year.stage !== 'Foundation' && state.year.stage !== 'Primary')) { host.innerHTML = ''; return; }
+    const pool = activeRails().flatMap((r) => r.items.filter(ageOk));
+    const themes = THEME_KEYWORDS.map(([name, re]) => ({ name, re, items: pool.filter((p) => re.test(p.name)) })).filter((t) => t.items.length >= 2);
+    if (!themes.length) { host.innerHTML = ''; return; }
+    host.innerHTML = `<div class="strip-head"><h2>Shop by character</h2><p>Find their favourite — taps filter the picks below.</p></div>
+      <div class="themes">${themes.map((t) => `<button class="theme${state.theme && state.theme.name === t.name ? ' is-on' : ''}" data-theme="${esc(t.name)}">
+        <span class="theme__img">${t.items[0].image ? `<img src="${esc(t.items[0].image)}" alt="">` : SHIRT_SVG}</span><span class="theme__n">${esc(t.name)}</span></button>`).join('')}</div>`;
+    wireImgFallback(host);
+    $$('.theme', host).forEach((b) => (b.onclick = () => {
+      const t = themes.find((x) => x.name === b.dataset.theme);
+      state.theme = (state.theme && state.theme.name === t.name) ? null : { name: t.name, re: t.re };
+      renderThemes(); renderCrossSell(); refreshScrollers();
+      const cs = document.getElementById('crossSellRails'); if (cs && state.theme) cs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
   }
 
   function renderBrands() {

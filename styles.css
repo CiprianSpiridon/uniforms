@@ -301,6 +301,35 @@ html[dir=rtl] .carousel-arrow svg{transform:rotate(180deg)}
 .pick__was{font-size:12px;color:var(--muted);text-decoration:line-through}
 .pick .btn{margin-top:6px}
 
+/* ---------- collection tiles ---------- */
+.ctiles{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.ctile{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:12px;display:flex;flex-direction:column;
+  align-items:center;gap:8px;text-align:center;cursor:pointer;transition:transform .15s var(--ease),box-shadow .15s,border-color .15s}
+.ctile:hover{transform:translateY(-3px);box-shadow:var(--sh-elev);border-color:var(--primary)}
+.ctile__img{width:100%;aspect-ratio:1;background:var(--img-tint);border-radius:var(--r-sm);display:grid;place-items:center;overflow:hidden}
+.ctile__img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;padding:8px}
+.ctile__img .pcard__ph svg{width:30px;height:30px}
+.ctile__t{font-size:12px;font-weight:700;color:var(--ink);line-height:1.2}
+.ctile__hook{font-size:11px;font-weight:700;color:var(--primary)}
+
+/* ---------- shop by character ---------- */
+.themes{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:6px}
+.themes::-webkit-scrollbar{display:none}
+.theme{flex:none;width:96px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
+.theme__img{width:78px;height:78px;border-radius:50%;background:var(--img-tint);border:2px solid transparent;display:grid;place-items:center;overflow:hidden;transition:border-color .15s,transform .15s}
+.theme:hover .theme__img{transform:translateY(-3px)}
+.theme.is-on .theme__img{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-tint)}
+.theme__img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;padding:6px}
+.theme__n{font-size:12px;font-weight:600;color:var(--ink);text-align:center;line-height:1.2}
+
+/* ---------- see-all link + merch cues ---------- */
+.themed-banner__link{margin-inline-start:auto;font-size:13px;font-weight:700;color:var(--primary);white-space:nowrap}
+.themed-banner__link:hover{color:var(--primary-dark)}
+.strip-head .chip{margin-inline-start:8px;vertical-align:middle}
+.pcard__bnpl{font-size:11px;color:var(--body)}
+.pcard__bnpl b{color:#5b2be0;font-weight:800}
+.pcard__stock{font-size:11px;font-weight:700;color:var(--notice)}
+
 /* ---------- themed banner + rail ---------- */
 .themed-banner{display:flex;align-items:center;gap:16px;border-radius:var(--r-md);padding:16px 22px;margin-bottom:6px}
 .themed-banner[data-fill=pink]{background:var(--fill-pink)}
@@ -450,6 +479,7 @@ html[dir=rtl] .toast.is-on{transform:translateX(50%) translateY(0)}
   .genders{grid-template-columns:1fr}
   .gtile{min-height:0;flex-direction:row;align-items:center}
   .picks{grid-template-columns:1fr}
+  .ctiles{grid-template-columns:repeat(3,1fr);gap:10px}
   .vprops li{font-size:12px;padding:8px 12px}
   .progress{top:0;position:static;padding:16px 14px 14px}
   .progress__dot{width:28px;height:28px;font-size:12px}
