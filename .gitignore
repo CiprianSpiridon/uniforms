@@ -1,0 +1,13 @@
+# tooling & local agent/session artifacts
+.browse/
+.claude/
+.agents/
+.kiro/
+.amazonq/
+*-lock.json
+agents-lock.json
+skills-lock.json
+
+# os / editor
+.DS_Store
+node_modules/

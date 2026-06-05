@@ -1,0 +1,147 @@
+{
+  "source": "Al Basma British School page (real listing data)",
+  "note": "Representative uniform products used to populate the demo grid. SKUs confirmed from PDPs. years[] are inferred from product name ranges.",
+  "count": 9,
+  "products": [
+    {
+      "name": "ABS UX POLO WHITE FS1-Y11",
+      "sku": "TP0426",
+      "priceAed": 63,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "CORE UNIFORM",
+      "gender": "UNISEX",
+      "years": [
+        "FS1",
+        "FS2",
+        "Y1",
+        "Y2",
+        "Y3",
+        "Y4",
+        "Y5",
+        "Y6",
+        "Y7",
+        "Y8",
+        "Y9",
+        "Y10",
+        "Y11"
+      ],
+      "url": "https://www.threadsme.com/abs-ux-polo-white-fs1-y11.html?pcat=23124",
+      "image": "https://www.threadsme.com/media/catalog/product/cache/07f2e6a9c8d1f3299eeec63ed457d5d9/w/h/white-polo-fs1-y11.jpg"
+    },
+    {
+      "name": "ABS GIRLS SS BLOUSE Y12-13 WHT",
+      "sku": "TP0428",
+      "priceAed": 78.75,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "CORE UNIFORM",
+      "gender": "GIRLS",
+      "years": [
+        "Y12",
+        "Y13"
+      ],
+      "url": "https://www.threadsme.com/abs-girls-ss-blouse-y12-13-wht.html?pcat=23124",
+      "image": "https://www.threadsme.com/media/catalog/product/cache/07f2e6a9c8d1f3299eeec63ed457d5d9/w/h/white-ss-blouse-y12-y13.jpg"
+    },
+    {
+      "name": "ABS BOYS SS SHIRT Y12-13 WHT",
+      "sku": "TP0427",
+      "priceAed": 78.75,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "CORE UNIFORM",
+      "gender": "BOYS",
+      "years": [
+        "Y12",
+        "Y13"
+      ],
+      "url": "https://www.threadsme.com/abs-boys-ss-shirt-y12-13-wht.html?pcat=23124",
+      "image": "https://www.threadsme.com/media/catalog/product/cache/07f2e6a9c8d1f3299eeec63ed457d5d9/w/h/white-ss-shirt-y12-y13.jpg"
+    },
+    {
+      "name": "ABS UX PANTS NAVY Y3-13",
+      "sku": "BT0341",
+      "priceAed": 89.75,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "CORE UNIFORM",
+      "gender": "UNISEX",
+      "years": [
+        "Y3",
+        "Y4",
+        "Y5",
+        "Y6",
+        "Y7",
+        "Y8",
+        "Y9",
+        "Y10",
+        "Y11",
+        "Y12",
+        "Y13"
+      ],
+      "url": "https://www.threadsme.com/abs-ux-pants-navy-y3-13.html?pcat=23124",
+      "image": "https://www.threadsme.com/media/catalog/product/cache/07f2e6a9c8d1f3299eeec63ed457d5d9/n/a/navy-trouser-fs1-y11.jpg"
+    },
+    {
+      "name": "ABS DIVIDED SKORT NAVY",
+      "sku": "BT0342",
+      "priceAed": 89.75,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "CORE UNIFORM",
+      "gender": "GIRLS",
+      "years": [
+        "FS1",
+        "FS2",
+        "Y1",
+        "Y2",
+        "Y3",
+        "Y4",
+        "Y5",
+        "Y6"
+      ],
+      "url": "https://www.threadsme.com/abs-divided-skort-navy.html?pcat=23124",
+      "image": "https://www.threadsme.com/media/catalog/product/cache/07f2e6a9c8d1f3299eeec63ed457d5d9/n/a/navy-divided-skirt-fs1-y11.jpg"
+    },
+    {
+      "name": "ABS UX PE POLO WHT/ORNG",
+      "sku": "SP0491",
+      "priceAed": 78.75,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "PE",
+      "gender": "UNISEX",
+      "years": [],
+      "url": "https://www.threadsme.com/abs-ux-pe-polo-wht-orng.html?pcat=23124",
+      "image": "https://www.threadsme.com/media/catalog/product/cache/07f2e6a9c8d1f3299eeec63ed457d5d9/o/r/orange-pe-tshirt.jpg"
+    },
+    {
+      "name": "ABS UX PE POLO WHT/BLU",
+      "sku": "SP0492",
+      "priceAed": 78.75,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "PE",
+      "gender": "UNISEX",
+      "years": [],
+      "url": "https://www.threadsme.com/abs-ux-pe-polo-wht-blu.html?pcat=23124",
+      "image": "https://www.threadsme.com/media/catalog/product/cache/07f2e6a9c8d1f3299eeec63ed457d5d9/b/l/blue-pe-tshirt.jpg"
+    },
+    {
+      "name": "ABS UX TRACK PANTS NAVY",
+      "sku": "SP0495",
+      "priceAed": 63,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "PE",
+      "gender": "UNISEX",
+      "years": [],
+      "url": "https://www.threadsme.com/abs-ux-track-pants-navy.html?pcat=23124",
+      "image": null
+    },
+    {
+      "name": "ABS UX WINTER JACKET NAVY",
+      "sku": "OW0201",
+      "priceAed": 105,
+      "school": "al-basma-british-school-abu-dhabi",
+      "uniformType": "WINTER UNIFORM",
+      "gender": "UNISEX",
+      "years": [],
+      "url": "https://www.threadsme.com/abs-ux-winter-jacket-navy.html?pcat=23124",
+      "image": null
+    }
+  ]
+}

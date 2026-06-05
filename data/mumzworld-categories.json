@@ -1,0 +1,57 @@
+{
+  "source": "live browse of mumzworld.com (2026-06-05)",
+  "note": "Mumzworld category relevance map for school-uniform cross-sell. Used to drive the approved rails and to wire a live Algolia feed later.",
+  "algolia": {
+    "productIndex": "magento2_aws_live_en_products",
+    "brandIndex": "magento2_aws_live_en_brands",
+    "credsExposed": false,
+    "credsNote": "Algolia appId/search key are proxied server-side, not in client HTML/__next_f. Live feed needs creds from the backend team or use of existing category endpoints.",
+    "productUrlPattern": "/en/<flat-product-slug>  (NOT /p/)",
+    "categoryUrlPattern": "/en/c/<top-level>[/<sub>[/<sub>]]",
+    "cardSelector": "div[data-sku]  ->  a[href^='/en/'] (name in title attr), first img (s3-pwa-prod.mumzworld.com/media/catalog/product/...), price in innerText 'AED <sale> [AED <orig> <disc%>]', rating '4.9 (22)'",
+    "lazyLoad": "grids lazy-load: after goto + network-idle, window.scrollTo down and re-query div[data-sku]"
+  },
+  "topLevelNav": [
+    { "label": "Sale", "url": "/en/c/sale" },
+    { "label": "Gear", "url": "/en/c/travel-gear" },
+    { "label": "Bedroom", "url": "/en/c/nursery-bedroom" },
+    { "label": "Feeding", "url": "/en/c/feeding-and-nursing" },
+    { "label": "Toys", "url": "/en/c/toys-learning" },
+    { "label": "Diapers", "url": "/en/c/diapers" },
+    { "label": "Outdoor", "url": "/en/c/outdoor" },
+    { "label": "Bath", "url": "/en/c/bath-and-skin-care" },
+    { "label": "Safety", "url": "/en/c/health-safety" },
+    { "label": "Fashion", "url": "/en/c/baby-clothing-shoes" },
+    { "label": "School", "url": "/en/c/back-to-school" },
+    { "label": "Mumz", "url": "/en/c/maternity" },
+    { "label": "Home", "url": "/en/c/household-supplies" },
+    { "label": "Pharmacy", "url": "/en/c/pharmacy" },
+    { "label": "Books", "url": "/en/c/books-dvds" },
+    { "label": "Party", "url": "/en/c/party-supplies" }
+  ],
+  "backToSchoolSubcategories": [
+    { "name": "Lunchboxes & Lunchbags", "offerHook": "Up to 75% OFF" },
+    { "name": "Water Bottles", "offerHook": "Up to 60% OFF" },
+    { "name": "School Bags", "offerHook": "Up to 60% OFF" },
+    { "name": "Stationery", "offerHook": "From AED 5" },
+    { "name": "Value Bundles", "offerHook": "Up to 55% OFF" },
+    { "name": "Arts & Crafts", "offerHook": "Up to 35% OFF" },
+    { "name": "Labels & Personalisation", "offerHook": null }
+  ],
+  "relevanceMap": [
+    { "category": "Back to School", "url": "/en/c/back-to-school", "relevance": "high", "stages": "all", "use": "primary cross-sell source" },
+    { "category": "BTS / Lunch", "url": "/en/c/back-to-school/lunch", "relevance": "high", "stages": "all" },
+    { "category": "BTS / Bottles", "url": "/en/c/back-to-school/bottles", "relevance": "high", "stages": "all" },
+    { "category": "BTS / School Bags", "url": "/en/c/back-to-school/school-bags", "relevance": "high", "stages": "foundation-lower-primary", "note": "stock skews 30-32cm character bags" },
+    { "category": "BTS / Stationery", "url": "/en/c/back-to-school/stationery", "relevance": "high", "stages": "primary" },
+    { "category": "Kids' Shoes", "url": "/en/c/baby-clothing-shoes/baby-clothes/shoes", "relevance": "high", "stages": "primary", "note": "sizing skews toddler-to-primary" },
+    { "category": "Swimwear (PE/swim)", "url": "/en/c/baby-clothing-shoes/baby-clothes/swimwear", "relevance": "medium", "stages": "foundation" },
+    { "category": "Toys & Learning", "url": "/en/c/toys-learning", "relevance": "medium", "stages": "primary", "note": "use educational-toys + arts-crafts subcats" },
+    { "category": "Books & DVDs", "url": "/en/c/books-dvds", "relevance": "medium", "stages": "foundation-primary", "note": "use children-s-books + education subcats" },
+    { "category": "Pharmacy", "url": "/en/c/pharmacy", "relevance": "medium", "stages": "all", "note": "cherry-pick vitamins/personal-care/skincare + children's-health (period care); never show raw grid" },
+    { "category": "Feeding & Nursing", "url": "/en/c/feeding-and-nursing", "relevance": "low", "note": "infant-skewed; school items already promoted into BTS" },
+    { "category": "Health & Safety", "url": "/en/c/health-safety", "relevance": "low", "note": "infant monitors/gates; not appropriate" },
+    { "category": "Household Supplies", "url": "/en/c/household-supplies", "relevance": "low", "note": "appliances/cleaning; labelling served by Mine Stamp in BTS" },
+    { "category": "Outdoor", "url": "/en/c/outdoor", "relevance": "low", "note": "pools/ride-ons; only scooters commute-relevant" }
+  ]
+}

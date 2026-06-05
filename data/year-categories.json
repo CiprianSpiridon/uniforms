@@ -1,0 +1,127 @@
+{
+  "source": "Threads school page left-rail \"Category\" filter (example ids from Al Basma British School)",
+  "note": "The 15 year levels are a fixed taxonomy across all schools, but the numeric cat id is PER-SCHOOL. exampleCatId values belong to Al Basma British School and must NOT be hardcoded globally. Display order is FS1, FS2, YEAR 1..13 (do not sort by id).",
+  "count": 15,
+  "yearCategories": [
+    {
+      "name": "FS 1",
+      "code": "FS1",
+      "order": 1,
+      "stage": "Foundation",
+      "typicalAge": "3-4",
+      "exampleCatId": "23175"
+    },
+    {
+      "name": "FS 2",
+      "code": "FS2",
+      "order": 2,
+      "stage": "Foundation",
+      "typicalAge": "4-5",
+      "exampleCatId": "23190"
+    },
+    {
+      "name": "YEAR 1",
+      "code": "Y1",
+      "order": 3,
+      "stage": "Primary",
+      "typicalAge": "5-6",
+      "exampleCatId": "23178"
+    },
+    {
+      "name": "YEAR 2",
+      "code": "Y2",
+      "order": 4,
+      "stage": "Primary",
+      "typicalAge": "6-7",
+      "exampleCatId": "23181"
+    },
+    {
+      "name": "YEAR 3",
+      "code": "Y3",
+      "order": 5,
+      "stage": "Primary",
+      "typicalAge": "7-8",
+      "exampleCatId": "23126"
+    },
+    {
+      "name": "YEAR 4",
+      "code": "Y4",
+      "order": 6,
+      "stage": "Primary",
+      "typicalAge": "8-9",
+      "exampleCatId": "23129"
+    },
+    {
+      "name": "YEAR 5",
+      "code": "Y5",
+      "order": 7,
+      "stage": "Primary",
+      "typicalAge": "9-10",
+      "exampleCatId": "23132"
+    },
+    {
+      "name": "YEAR 6",
+      "code": "Y6",
+      "order": 8,
+      "stage": "Primary",
+      "typicalAge": "10-11",
+      "exampleCatId": "23135"
+    },
+    {
+      "name": "YEAR 7",
+      "code": "Y7",
+      "order": 9,
+      "stage": "Secondary",
+      "typicalAge": "11-12",
+      "exampleCatId": "23140"
+    },
+    {
+      "name": "YEAR 8",
+      "code": "Y8",
+      "order": 10,
+      "stage": "Secondary",
+      "typicalAge": "12-13",
+      "exampleCatId": "23145"
+    },
+    {
+      "name": "YEAR 9",
+      "code": "Y9",
+      "order": 11,
+      "stage": "Secondary",
+      "typicalAge": "13-14",
+      "exampleCatId": "23150"
+    },
+    {
+      "name": "YEAR 10",
+      "code": "Y10",
+      "order": 12,
+      "stage": "Secondary",
+      "typicalAge": "14-15",
+      "exampleCatId": "23155"
+    },
+    {
+      "name": "YEAR 11",
+      "code": "Y11",
+      "order": 13,
+      "stage": "Secondary",
+      "typicalAge": "15-16",
+      "exampleCatId": "23160"
+    },
+    {
+      "name": "YEAR 12",
+      "code": "Y12",
+      "order": 14,
+      "stage": "Sixth Form",
+      "typicalAge": "16-17",
+      "exampleCatId": "23165"
+    },
+    {
+      "name": "YEAR 13",
+      "code": "Y13",
+      "order": 15,
+      "stage": "Sixth Form",
+      "typicalAge": "17-18",
+      "exampleCatId": "23170"
+    }
+  ]
+}

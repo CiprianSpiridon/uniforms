@@ -1,0 +1,64 @@
+{
+  "source": "live browse of mumzworld.com homepage + /c/back-to-school (2026-06-05)",
+  "note": "Mumzworld landing-page component system + reusable CMS assets, so the uniform page reads as native. Tokens here AUGMENT data/design-tokens.json with values confirmed from the live rendered site.",
+  "liveTokens": {
+    "brandPrimary": "#E50056",
+    "brandPrimaryLiveVariant": "#E60058",
+    "pageBackground": "#F4F4F6",
+    "cardSurface": "#FFFFFF",
+    "textHighEmphasis": "#43454C",
+    "textMedium": "#6B6D72",
+    "textLeast": "#94969E",
+    "disabledBorder": "#DFDFE7",
+    "deliveryPromiseChip": { "bg": "#F8E751", "text": "#43454C", "fontSize": "11px", "weight": 700 },
+    "discountBadge": { "bg": "#009246", "text": "#FFFFFF", "note": "green -XX% badge top-left" },
+    "utilityBar": { "bg": "#1F1B6B", "text": "#FFFFFF", "note": "dark indigo top trust strip" },
+    "font": "Inter",
+    "pastelSectionFills": { "gear": "pink", "feeding": "lavender", "bedroom": "lightBlue", "toys": "pink", "outdoor": "green" }
+  },
+  "scrollerMechanics": {
+    "engine": "Embla Carousel",
+    "arrows": "circular 40x40, rounded-full, bg #F4F4F6, text #43454C, 1px #DFDFE7 border, hover->white, positioned 25px from edges, RTL mirrored (rotate-180)",
+    "dots": "none anywhere",
+    "autoRotate": "ONLY the top hero carousel; content rails do not auto-advance",
+    "behaviour": "snap to slide, overflow hidden, peek created by item-width vs container, drag/swipe enabled",
+    "itemsPerViewDesktop": { "hero": 1, "promoTiles": 5, "categoryCircles": 9, "brandTiles": 6, "serviceTiles": 8, "editorialTiles": 3, "productRail": 5, "plpGrid": 4 }
+  },
+  "components": [
+    { "name": "utilityBar", "desc": "thin dark-indigo top strip with rotating trust messages (Trusted by Millions of Mums, Same Day Delivery with Yalla)", "height": "36-40px" },
+    { "name": "header", "desc": "white sticky: round pink logo + large rounded search pill + locale + sign-in + cart; below it horizontal category nav starting with pink SALE pill", "navFontSize": "13px uppercase" },
+    { "name": "heroCarousel", "desc": "full-width single-slide auto-rotating banner carousel, rounded corners, Shop Now pill", "size": "~1348x288 desktop" },
+    { "name": "promoTileStrip", "desc": "~5 small utility/service tiles per view (Clearance, 2-hour delivery, Mumz Services, Personalized Picks)", "size": "item ~270x120" },
+    { "name": "circularCategoryScroller", "desc": "Explore All Categories: ~9 round category icons + label per view", "size": "circle ~90-110px" },
+    { "name": "brandSpotlightScroller", "desc": "~6 landscape brand tiles with pink brand-name bar", "size": "item ~225x261" },
+    { "name": "productRail", "desc": "horizontal scroller of standard product cards (~5/view); h3 heading left", "cardSize": "~250px wide" },
+    { "name": "themedBannerRailPair", "desc": "DOMINANT rhythm: full-width pastel banner (headline | tagline + Shop Now pill, color-coded) immediately followed by a matching product rail", "bannerHeight": "80-110px" },
+    { "name": "editorialTiles3up", "desc": "3-up lifestyle image tiles with overlaid labels (With You Every Step: Pregnancy/New Mumz/Toddler Mumz)", "size": "item ~449x202" },
+    { "name": "subCategoryTileScroller", "desc": "PLP: rounded-square image tiles with label + offer hook (Lunchboxes Up to 75% OFF)", "perView": 6 },
+    { "name": "characterCircleScroller", "desc": "PLP: circular theme/character filters (Superhero, Disney, Unicorn, Space)" },
+    { "name": "mumzPicks4upGrid", "desc": "4-up promo tile grid on a colored panel with pink From-price badges (School Clothes, Premium Picks, Value Bundles, Educational Tools)" },
+    { "name": "valuePropChipRow", "desc": "Why Mumz Choose Mumzworld: row of pink-outlined pill chips (Mum-Approved Brands, Curated by Stage, Hassle-Free Returns)" },
+    { "name": "brandLogoScroller", "desc": "Mum-Approved Brands: horizontal scroller of brand logos (~7-8/view, ~32-40px tall)" },
+    { "name": "plpFilterGrid", "desc": "left sticky filter sidebar (~250px: Sale/Discount toggles + collapsible facets incl. Age, Gender, Clothes Size) + 4-col product grid + Sort by + result count; Algolia-rendered", "criticalReuse": "Age + Gender + Clothes Size facets map directly to our school/year/gender flow" },
+    { "name": "productCard", "desc": "square image on white; top-left green -XX% + Exclusive/Sale label (white 12px w800); top-right wishlist heart; red circular '+' add button overlapping image bottom-right; title #43454c 14px 2-line; price row (bold w800 current + struck original #6b6d72 + pink discount % w600); rating '4.8 (416)'; yellow delivery-promise chip" },
+    { "name": "seoTextBlock", "desc": "bottom long-form SEO copy + 'Learn more about {Category}' expandable" },
+    { "name": "footer", "desc": "multi-column links + app badges + payment logos + press Wall of Fame" }
+  ],
+  "reusableCmsBanners": {
+    "host": "media-cms.mumzworld.com",
+    "heroCampaign1920x410": [
+      "DESKTOP_BANNERS_EN_CAMPAIGN_BENTGO_b0daae6a10.jpg",
+      "DESKTOP_BANNERS_EN_CAMPAIGN_PERCENTAGE_BENTGO_ac941cb05a.jpg",
+      "DESKTOP_BANNERS_EN_CAMPAIGN_PERCENTAGE_EAZYKIDS_f610c81d95.jpg"
+    ],
+    "sectionHeaderStrips": [
+      { "name": "Essentials", "asset": "DESKTOP_ESSENTIALS_EN_85fb6de85c.jpg", "h": 137 },
+      { "name": "Shop by Characters", "asset": "DESKTOP_CHARACTERS_EN_d5c06a75de.jpg", "h": 137 },
+      { "name": "Mumz Picks", "asset": "DESKTOP_MUMZPICKS_EN_e49000c48b.jpg", "h": 74 },
+      { "name": "Brands", "asset": "DESKTOP_BRANDS_EN_1_743ba972c1.jpg", "h": 74 },
+      { "name": "USPs", "asset": "ENGLISH_USPS_DESKTOP_bdb095a4a8.jpg", "h": 69 },
+      { "name": "Why Mumz", "asset": "DESKTOP_WHYMUMZ_EN_2a40df8258.jpg", "h": 74 }
+    ]
+  },
+  "recommendedFlow": "Hero carousel -> value-prop chips -> STEP1 School (search pill + circular school-crest scroller) -> STEP2 Year (circular/tile scroller FS1..Y13 + sticky school context banner) -> STEP3 Gender (3-up editorial tiles Girls/Boys/Unisex) -> STEP4 Suggestions (Mumz Picks 4-up bundles -> uniform product rail -> gated cross-sell rails -> escape hatch to filtered grid) -> brand logos -> SEO block -> footer"
+}

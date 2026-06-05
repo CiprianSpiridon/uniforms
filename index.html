@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>School Uniforms — Sorted in Minutes | Mumzworld</title>
+<meta name="description" content="Shop official school uniforms for 70+ UAE schools on Mumzworld. Pick your school, year and child — and we'll line up the exact uniform plus everything else they need for the new term." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="container site-header__inner">
+    <a class="brand" href="#" aria-label="Mumzworld home">
+      <span class="brand__dot" aria-hidden="true"></span>mumzworld
+    </a>
+    <form class="search" role="search" onsubmit="return false;">
+      <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" class="search__input" placeholder="Search for uniforms, lunch boxes, shoes…" aria-label="Search products" />
+      <span class="search__locale">Delivering to <strong>UAE</strong></span>
+    </form>
+    <nav class="header-actions" aria-label="Account">
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language">العربية</button>
+      <button class="icon-btn" type="button" aria-label="Account">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span class="icon-btn__label">Sign in</span>
+      </button>
+      <button class="icon-btn" type="button" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+      </button>
+      <button class="icon-btn icon-btn--cart" type="button" id="cartBtn" aria-label="Open cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 2H2"/></svg>
+        <span class="cart-count" id="cartCount" hidden>0</span>
+      </button>
+    </nav>
+  </div>
+  <nav class="catnav" aria-label="Categories">
+    <div class="container catnav__inner" id="catnav">
+      <a class="catnav__sale" href="#">SALE</a>
+      <a href="#">Gear</a><a href="#">Feeding</a><a href="#">Toys</a><a href="#">Diapers</a>
+      <a href="#">Bath</a><a href="#">Fashion</a><a class="is-active" href="#journey">School</a>
+      <a href="#">Pharmacy</a><a href="#">Books</a><a href="#">Home</a><a href="#">Party</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <!-- breadcrumb -->
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="#">Home</a><span class="crumbs__sep" aria-hidden="true">/</span>
+      <a href="#">Back to School</a><span class="crumbs__sep" aria-hidden="true">/</span>
+      <a href="#journey" class="crumbs__here" id="crumbRoot">School Uniforms</a>
+      <span id="crumbTrail"></span>
+    </nav>
+  </div>
+
+  <!-- ============ HERO CAROUSEL ============ -->
+  <section class="container hero" aria-roledescription="carousel" aria-label="Featured">
+    <div class="hero__viewport"><div class="hero__track" id="heroTrack"><!-- slides injected --></div></div>
+    <button class="carousel-arrow carousel-arrow--prev" id="heroPrev" aria-label="Previous slide" type="button"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+    <button class="carousel-arrow carousel-arrow--next" id="heroNext" aria-label="Next slide" type="button"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+    <div class="hero__dots" id="heroDots" role="tablist" aria-label="Slides"></div>
+  </section>
+
+  <!-- value-prop chips -->
+  <section class="container">
+    <ul class="vprops" aria-label="Why shop uniforms here">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 7v5c0 5 4 8 9 9 5-1 9-4 9-9V7z"/><path d="m9 12 2 2 4-4"/></svg> Official, school-approved</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg> True-to-size fit guide</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg> Bundle &amp; save</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M12 7v5l3 2"/></svg> Easy 30-day returns</li>
+    </ul>
+  </section>
+
+  <!-- ============ GUIDED JOURNEY ============ -->
+  <section class="journey" id="journey">
+    <div class="container">
+      <!-- progress indicator -->
+      <nav class="progress" id="stepper" aria-label="Progress">
+        <ol class="progress__track">
+          <li class="progress__step is-current" data-step="school"><span class="progress__dot"><span class="progress__n">1</span></span><span class="progress__label">School</span></li>
+          <li class="progress__step" data-step="year"><span class="progress__dot"><span class="progress__n">2</span></span><span class="progress__label">Year</span></li>
+          <li class="progress__step" data-step="gender"><span class="progress__dot"><span class="progress__n">3</span></span><span class="progress__label">Child</span></li>
+          <li class="progress__step" data-step="shop"><span class="progress__dot"><span class="progress__n">4</span></span><span class="progress__label">Shop</span></li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- STEP 1 — SCHOOL -->
+    <div class="container step" id="step-school" data-step="school">
+      <header class="step__head">
+        <h2 class="step__title">Find your school</h2>
+        <p class="step__sub">Search 70+ UAE schools, or tap a popular one below.</p>
+      </header>
+      <div class="schoolpick">
+        <div class="schoolpick__search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" id="schoolSearch" autocomplete="off" placeholder="Type your school name…" aria-label="Search for your school" aria-expanded="false" aria-controls="schoolResults" role="combobox" />
+          <button type="button" class="schoolpick__clear" id="schoolClear" hidden aria-label="Clear">×</button>
+          <ul class="schoolpick__results" id="schoolResults" role="listbox" hidden></ul>
+        </div>
+        <div class="chips" id="emirateChips" role="group" aria-label="Filter by emirate"></div>
+      </div>
+      <div class="scroller" data-scroller>
+        <button class="carousel-arrow carousel-arrow--prev" data-scroll-prev aria-label="Scroll left" type="button"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+        <ul class="scroller__track crests" id="popularSchools"></ul>
+        <button class="carousel-arrow carousel-arrow--next" data-scroll-next aria-label="Scroll right" type="button"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — YEAR -->
+    <div class="container step is-locked" id="step-year" data-step="year" aria-hidden="true">
+      <div class="ctxbanner" id="ctxSchool"></div>
+      <header class="step__head">
+        <h2 class="step__title">Which year group?</h2>
+        <p class="step__sub">Pick your child's year so we show the right uniform.</p>
+      </header>
+      <div class="years" id="yearGroups"></div>
+    </div>
+
+    <!-- STEP 3 — GENDER -->
+    <div class="container step is-locked" id="step-gender" data-step="gender" aria-hidden="true">
+      <header class="step__head">
+        <h2 class="step__title">Who are we shopping for?</h2>
+        <p class="step__sub">We'll tailor sizing and suggestions.</p>
+      </header>
+      <div class="genders" id="genderTiles"></div>
+    </div>
+
+    <!-- STEP 4 — SHOP / SUGGESTIONS -->
+    <div class="step is-locked" id="step-shop" data-step="shop" aria-hidden="true">
+      <div class="container">
+        <div class="ctxbanner ctxbanner--summary" id="ctxSummary"></div>
+      </div>
+
+      <!-- Mumz Picks bundles -->
+      <div class="container block">
+        <div class="strip-head"><h2>Quick picks for the new term</h2><p>Everything sorted in a tap — built from the items below.</p></div>
+        <div class="picks" id="bundlePicks"></div>
+      </div>
+
+      <!-- Uniform rail (Threads) -->
+      <div class="container block">
+        <div class="themed-banner" data-fill="pink">
+          <div class="themed-banner__text"><strong id="uniformBannerTitle">The Uniform</strong><span>Official kit, by year &amp; gender</span></div>
+          <a class="btn btn--primary" id="uniformViewAll" href="#" target="_blank" rel="noopener">View all at this school</a>
+        </div>
+        <div class="scroller" data-scroller>
+          <button class="carousel-arrow carousel-arrow--prev" data-scroll-prev aria-label="Scroll left" type="button"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+          <ul class="scroller__track grid-rail" id="uniformRail"></ul>
+          <button class="carousel-arrow carousel-arrow--next" data-scroll-next aria-label="Scroll right" type="button"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Cross-sell rails injected here -->
+      <div id="crossSellRails"></div>
+
+      <!-- brand logos -->
+      <div class="container block">
+        <div class="brandstrip" id="brandStrip" aria-label="Mum-approved brands"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRUST STRIP ============ -->
+  <section class="container trust" aria-label="Why Mumzworld">
+    <div class="trust__item"><svg viewBox="0 0 24 24"><path d="M12 3 3 7v5c0 5 4 8 9 9 5-1 9-4 9-9V7z"/><path d="m9 12 2 2 4-4"/></svg><div><strong>Official partner</strong><span>Every uniform is school-approved</span></div></div>
+  <div class="trust__item"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="m21 4-9 9-3-3"/></svg><div><strong>Easy returns</strong><span>30 days, free &amp; simple</span></div></div>
+  <div class="trust__item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg><div><strong>Book a fitting</strong><span>Reserve an in-store slot</span></div></div>
+  <div class="trust__item"><svg viewBox="0 0 24 24"><path d="M3 7h13v10H3z"/><path d="M16 10h3l2 3v4h-5z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><div><strong>Fast UAE delivery</strong><span>Same-day with Yalla</span></div></div>
+  </section>
+
+  <!-- ============ SEO BLOCK ============ -->
+  <section class="container seo">
+    <h2>School uniforms in the UAE, made simple</h2>
+    <p>Mumzworld brings official school uniforms from 70+ schools across Dubai, Abu Dhabi, Sharjah and beyond into one place — alongside the lunch boxes, water bottles, school shoes, stationery and name labels every new term needs. Choose your school, pick the year group from FS 1 right through to Year 13, tell us who you're shopping for, and we line up the exact core, PE and winter kit plus only the extras that make sense for their age. Bundle the basics, label everything, and have it all delivered across the UAE.</p>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container site-footer__cols">
+    <div><h3>Shop</h3><ul><li><a href="#">School Uniforms</a></li><li><a href="#">Back to School</a></li><li><a href="#">Lunch &amp; Bottles</a></li><li><a href="#">School Shoes</a></li><li><a href="#">Stationery</a></li></ul></div>
+    <div><h3>Get to know us</h3><ul><li><a href="#">About Mumzworld</a></li><li><a href="#">Careers</a></li><li><a href="#">Mumz Services</a></li></ul></div>
+    <div><h3>Let us help</h3><ul><li><a href="#">Track order</a></li><li><a href="#">Returns</a></li><li><a href="#">Size guide</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div><h3>More ways to shop</h3><ul><li><a href="#">iOS app</a></li><li><a href="#">Android app</a></li></ul></div>
+  </div>
+  <div class="container site-footer__bottom"><span>© 2026 Mumzworld · Uniforms powered by Threads</span></div>
+</footer>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="drawer-scrim" id="drawerScrim" hidden></div>
+<aside class="drawer" id="cartDrawer" aria-hidden="true" aria-label="Your cart" role="dialog" aria-modal="true">
+  <header class="drawer__head">
+    <h2>Your bag <span id="drawerCount">(0)</span></h2>
+    <button class="icon-btn" id="drawerClose" aria-label="Close cart" type="button">×</button>
+  </header>
+  <div class="drawer__body" id="drawerBody"></div>
+  <div class="drawer__nudge" id="drawerNudge" hidden></div>
+  <footer class="drawer__foot">
+    <div class="drawer__subtotal"><span>Subtotal</span><strong id="drawerSubtotal">AED 0.00</strong></div>
+    <button class="btn btn--primary btn--block" id="checkoutBtn" type="button">Checkout</button>
+  </footer>
+</aside>
+
+<!-- toast -->
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

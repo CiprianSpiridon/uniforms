@@ -1,0 +1,708 @@
+{
+  "source": "https://www.threadsme.com/onlineshop/ (catjson)",
+  "extractedAt": "2026-06-05",
+  "count": 70,
+  "note": "Genuine school stores only. 4 category entries (Brands, Promotions, Stationery, Supplementary) and 1 junk test record (GDASMNXCKHDF) excluded from the 75 raw catjson entries. emirate/curriculum are heuristic inferences from the school name for filtering.",
+  "schools": [
+    {
+      "id": 1,
+      "name": "ABC BRITISH ACADEMY",
+      "slug": "abc-private-school-abu-dhabi",
+      "url": "https://www.threadsme.com/abc-private-school-abu-dhabi.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 2,
+      "name": "AJYAL INTERNATIONAL SCHOOL - AL FALAH",
+      "slug": "ajyal-international-school-al-falah",
+      "url": "https://www.threadsme.com/ajyal-international-school-al-falah.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 3,
+      "name": "AJYAL INTERNATIONAL SCHOOL - MBZ",
+      "slug": "ajyal-international-school-mbz",
+      "url": "https://www.threadsme.com/ajyal-international-school-mbz.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 4,
+      "name": "AL BASMA BRITISH SCHOOL - ABU DHABI",
+      "slug": "al-basma-british-school-abu-dhabi",
+      "url": "https://www.threadsme.com/al-basma-british-school-abu-dhabi.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 5,
+      "name": "AL NOOR",
+      "slug": "al-noor",
+      "url": "https://www.threadsme.com/al-noor.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/ALN.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 6,
+      "name": "ALMAHARAT PRIVATE SCHOOL",
+      "slug": "almaharat-private-school",
+      "url": "https://www.threadsme.com/almaharat-private-school.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 7,
+      "name": "BEACONHOUSE SCHOOL",
+      "slug": "beaconhouse-school",
+      "url": "https://www.threadsme.com/beaconhouse-school.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 8,
+      "name": "BILINGUAL FRENCH INTERNATIONAL SCHOOL ICE",
+      "slug": "bilingual-french-international-school-ice",
+      "url": "https://www.threadsme.com/bilingual-french-international-school-ice.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/ICE-LOGO.jpg",
+      "emirate": "Dubai",
+      "curriculum": "French"
+    },
+    {
+      "id": 9,
+      "name": "CAMBRIDGE INTERNATIONAL SCHOOL - DUBAI",
+      "slug": "cambridge-international-school-dubai",
+      "url": "https://www.threadsme.com/cambridge-international-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/CAM_3.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 10,
+      "name": "DEIRA INTERNATIONAL SCHOOL",
+      "slug": "deira-international-school",
+      "url": "https://www.threadsme.com/deira-international-school.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 11,
+      "name": "DUBAI AMERICAN ACADEMY",
+      "slug": "dubai-american-academy",
+      "url": "https://www.threadsme.com/dubai-american-academy.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/DAA.jpg",
+      "emirate": "Dubai",
+      "curriculum": "American"
+    },
+    {
+      "id": 12,
+      "name": "GEMS AL BARSHA NATIONAL SCHOOL",
+      "slug": "gems-al-barsha-national-school",
+      "url": "https://www.threadsme.com/gems-al-barsha-national-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GNS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 13,
+      "name": "GEMS AL KHALEEJ INTERNATIONAL SCHOOL DUBAI",
+      "slug": "gems-al-khaleej-national-school",
+      "url": "https://www.threadsme.com/gems-al-khaleej-national-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/AKNS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 14,
+      "name": "GEMS AMERICAN ACADEMY ABU DHABI",
+      "slug": "gems-american-academy-abu-dhabi",
+      "url": "https://www.threadsme.com/gems-american-academy-abu-dhabi.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GAA.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "American"
+    },
+    {
+      "id": 15,
+      "name": "GEMS CAMBRIDGE INTERNATIONAL PRIVATE SCHOOL - SHARJAH",
+      "slug": "gems-cambridge-international-private-school-sharjah",
+      "url": "https://www.threadsme.com/gems-cambridge-international-private-school-sharjah.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/CAM_2.jpg",
+      "emirate": "Sharjah",
+      "curriculum": "British"
+    },
+    {
+      "id": 16,
+      "name": "GEMS CAMBRIDGE INTERNATIONAL SCHOOL - BANIYAS",
+      "slug": "gems-cambridge-international-school-baniyas",
+      "url": "https://www.threadsme.com/gems-cambridge-international-school-baniyas.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/CAM_4.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 17,
+      "name": "GEMS FIRSTPOINT SCHOOL",
+      "slug": "gems-firstpoint-school",
+      "url": "https://www.threadsme.com/gems-firstpoint-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/FP.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 18,
+      "name": "GEMS FOUNDERS SCHOOL - AL MIZHAR",
+      "slug": "gems-founders-school-al-mizhar",
+      "url": "https://www.threadsme.com/gems-founders-school-al-mizhar.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/FND.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 19,
+      "name": "GEMS FOUNDERS SCHOOL - DUBAI",
+      "slug": "gems-founders-school-dubai",
+      "url": "https://www.threadsme.com/gems-founders-school-dubai.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 20,
+      "name": "GEMS FOUNDERS SCHOOL - DUBAI SOUTH",
+      "slug": "gems-founders-school-dubai-south",
+      "url": "https://www.threadsme.com/gems-founders-school-dubai-south.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 21,
+      "name": "GEMS FOUNDERS SCHOOL - MASDAR CITY",
+      "slug": "gems-founders-school-masdar-city",
+      "url": "https://www.threadsme.com/gems-founders-school-masdar-city.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 22,
+      "name": "GEMS INTERNATIONAL SCHOOL",
+      "slug": "gems-international-school",
+      "url": "https://www.threadsme.com/gems-international-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GIS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 23,
+      "name": "GEMS LEGACY SCHOOL",
+      "slug": "gems-legacy-school",
+      "url": "https://www.threadsme.com/gems-legacy-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/LEGACY.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 24,
+      "name": "GEMS METROPOLE SCHOOL",
+      "slug": "gems-metropole-school",
+      "url": "https://www.threadsme.com/gems-metropole-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/MEP_1.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 25,
+      "name": "GEMS METROPOLE SCHOOL AL WAHA",
+      "slug": "gems-metropole-school-al-waha",
+      "url": "https://www.threadsme.com/gems-metropole-school-al-waha.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 26,
+      "name": "GEMS MILLENNIUM SCHOOL SHARJAH",
+      "slug": "gems-millennium-school-sharjah",
+      "url": "https://www.threadsme.com/gems-millennium-school-sharjah.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GMS.jpg",
+      "emirate": "Sharjah",
+      "curriculum": "British"
+    },
+    {
+      "id": 27,
+      "name": "GEMS MODERN ACADEMY DUBAI",
+      "slug": "gems-modern-academy-dubai",
+      "url": "https://www.threadsme.com/gems-modern-academy-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GMA_1.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 28,
+      "name": "GEMS NEW MILLENNIUM SCHOOL AL KHAIL",
+      "slug": "gems-new-millennium-school-dubai",
+      "url": "https://www.threadsme.com/gems-new-millennium-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/NMS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 29,
+      "name": "GEMS ROYAL DUBAI SCHOOL",
+      "slug": "gems-royal-dubai-school",
+      "url": "https://www.threadsme.com/gems-royal-dubai-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/RDS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 30,
+      "name": "GEMS UNITED INDIAN SCHOOL ABU DHABI",
+      "slug": "gems-united-indian-school-abu-dhabi",
+      "url": "https://www.threadsme.com/gems-united-indian-school-abu-dhabi.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/UIS.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "Indian"
+    },
+    {
+      "id": 31,
+      "name": "GEMS WELLINGTON ACADEMY - AL KHAIL",
+      "slug": "gems-wellington-academy-al-khail",
+      "url": "https://www.threadsme.com/gems-wellington-academy-al-khail.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WIS_1.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 32,
+      "name": "GEMS WELLINGTON INT. - DUBAI",
+      "slug": "gems-wellington-int-dubai",
+      "url": "https://www.threadsme.com/gems-wellington-int-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WIS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 33,
+      "name": "GEMS WELLINGTON SILICON OASIS",
+      "slug": "gems-wellington-silicon-oasis",
+      "url": "https://www.threadsme.com/gems-wellington-silicon-oasis.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WIS_3.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 34,
+      "name": "GEMS WESTMINSTER SCHOOL - RAK",
+      "slug": "gems-westminster-school-rak",
+      "url": "https://www.threadsme.com/gems-westminster-school-rak.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Ras Al Khaimah",
+      "curriculum": "British"
+    },
+    {
+      "id": 35,
+      "name": "GEMS WESTMINSTER SCHOOL SHARJAH",
+      "slug": "gems-westminster-school-sharjah",
+      "url": "https://www.threadsme.com/gems-westminster-school-sharjah.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/TWS.jpg",
+      "emirate": "Sharjah",
+      "curriculum": "British"
+    },
+    {
+      "id": 36,
+      "name": "GEMS WINCHESTER SCHOOL - DUBAI",
+      "slug": "gems-winchester-school-dubai-oud-metha",
+      "url": "https://www.threadsme.com/gems-winchester-school-dubai-oud-metha.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WIN_3.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 37,
+      "name": "GEMS WINCHESTER SCHOOL - FUJAIRAH",
+      "slug": "gems-winchester-school-fujairah",
+      "url": "https://www.threadsme.com/gems-winchester-school-fujairah.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WIN.jpg",
+      "emirate": "Fujairah",
+      "curriculum": "British"
+    },
+    {
+      "id": 38,
+      "name": "GEMS WINCHESTER SCHOOL L.L.C. - ABU DHABI",
+      "slug": "gems-winchester-school-l-l-c-abu-dhabi",
+      "url": "https://www.threadsme.com/gems-winchester-school-l-l-c-abu-dhabi.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WIN_1.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 39,
+      "name": "GEMS WORLD ACADEMY ABU DHABI",
+      "slug": "world-academy-abu-dhabi",
+      "url": "https://www.threadsme.com/world-academy-abu-dhabi.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GWA.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 40,
+      "name": "GEMS WORLD ACADEMY DUBAI",
+      "slug": "gems-world-academy-dubai",
+      "url": "https://www.threadsme.com/gems-world-academy-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GWA_1.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 41,
+      "name": "GERMAN INTERNATIONAL SCHOOL DUBAI",
+      "slug": "german-international-school-dubai",
+      "url": "https://www.threadsme.com/german-international-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/GERM.jpg",
+      "emirate": "Dubai",
+      "curriculum": "German"
+    },
+    {
+      "id": 42,
+      "name": "GERMAN INTERNATIONAL SCHOOL SHARJAH",
+      "slug": "german-international-school-sharjah",
+      "url": "https://www.threadsme.com/german-international-school-sharjah.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Sharjah",
+      "curriculum": "German"
+    },
+    {
+      "id": 43,
+      "name": "HORIZON PRIVATE SCHOOL - BRANCH",
+      "slug": "horizon-private-school-abu-dhabi",
+      "url": "https://www.threadsme.com/horizon-private-school-abu-dhabi.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/HPS_1_.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 44,
+      "name": "JUMEIRAH COLLEGE - DUBAI",
+      "slug": "jumeirah-college-dubai",
+      "url": "https://www.threadsme.com/jumeirah-college-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/JC.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 45,
+      "name": "JUMEIRAH PRIMARY SCHOOL",
+      "slug": "jumeirah-primary-school",
+      "url": "https://www.threadsme.com/jumeirah-primary-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/JPS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 46,
+      "name": "KINGS' SCHOOL AL BARSHA",
+      "slug": "ksab",
+      "url": "https://www.threadsme.com/ksab.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/KNG_4.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 47,
+      "name": "KINGS' SCHOOL DUBAI",
+      "slug": "kgsd",
+      "url": "https://www.threadsme.com/kgsd.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/KNG_3.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 48,
+      "name": "KINGS' SCHOOL NAD AL SHEBA",
+      "slug": "ksnas",
+      "url": "https://www.threadsme.com/ksnas.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/KNG_2.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 49,
+      "name": "LYCEE FRANCAIS INTERNATIONAL DE LAFLEC",
+      "slug": "lycee-francais-international-de-laflec",
+      "url": "https://www.threadsme.com/lycee-francais-international-de-laflec.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/AFLEC.jpg",
+      "emirate": "Dubai",
+      "curriculum": "French"
+    },
+    {
+      "id": 50,
+      "name": "LYCEE FRANCAIS INTERNATIONAL GEORGES POMPIDOU - ACADEMIC CITY",
+      "slug": "lycee-francais-international-georges-pompidou-academic-city",
+      "url": "https://www.threadsme.com/lycee-francais-international-georges-pompidou-academic-city.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/LFI_1.jpg",
+      "emirate": "Dubai",
+      "curriculum": "French"
+    },
+    {
+      "id": 51,
+      "name": "LYCEE FRANCAIS INTERNATIONAL GEORGES POMPIDOU - Oud Metha",
+      "slug": "lycee-francais-international-georges-pompidou-oud-metha",
+      "url": "https://www.threadsme.com/lycee-francais-international-georges-pompidou-oud-metha.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/LFI_3.jpg",
+      "emirate": "Dubai",
+      "curriculum": "French"
+    },
+    {
+      "id": 52,
+      "name": "LYCEE FRANCAIS THEODORE MONOD - ABU DHABI",
+      "slug": "lftm",
+      "url": "https://www.threadsme.com/lftm.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/LFITM_3.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "French"
+    },
+    {
+      "id": 53,
+      "name": "LYCEE LIBANAIS FRANCOPHONE PRIVE-DUBAI (MEYDAN)",
+      "slug": "lycee-libanais-francophone-prive-dubai-meydan",
+      "url": "https://www.threadsme.com/lycee-libanais-francophone-prive-dubai-meydan.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "French"
+    },
+    {
+      "id": 54,
+      "name": "NEWLANDS SCHOOL DUBAI",
+      "slug": "newlands-school-dubai",
+      "url": "https://www.threadsme.com/newlands-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/NEWL.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 55,
+      "name": "NEXT GENERATION SCHOOL - DUBAI",
+      "slug": "next-generation-school-dubai",
+      "url": "https://www.threadsme.com/next-generation-school-dubai.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 56,
+      "name": "OUR OWN ENGLISH HIGH SCHOOL AL AIN",
+      "slug": "our-own-english-high-school-al-ain",
+      "url": "https://www.threadsme.com/our-own-english-high-school-al-ain.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/OOS.jpg",
+      "emirate": "Al Ain",
+      "curriculum": "Indian"
+    },
+    {
+      "id": 57,
+      "name": "OUR OWN ENGLISH HIGH SCHOOL AL WARQA DUBAI (GIRLS)",
+      "slug": "our-own-english-high-school-al-warqa-dubai-girls",
+      "url": "https://www.threadsme.com/our-own-english-high-school-al-warqa-dubai-girls.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/OOS_5.jpg",
+      "emirate": "Dubai",
+      "curriculum": "Indian"
+    },
+    {
+      "id": 58,
+      "name": "OUR OWN ENGLISH HIGH SCHOOL SHARJAH - BOYS",
+      "slug": "our-own-english-high-school-sharjah-boys",
+      "url": "https://www.threadsme.com/our-own-english-high-school-sharjah-boys.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/OOS_1.jpg",
+      "emirate": "Sharjah",
+      "curriculum": "Indian"
+    },
+    {
+      "id": 59,
+      "name": "OUR OWN ENGLISH HIGH SCHOOL SHARJAH - GIRLS",
+      "slug": "our-own-english-high-school-sharjah-girls",
+      "url": "https://www.threadsme.com/our-own-english-high-school-sharjah-girls.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/OOS_3.jpg",
+      "emirate": "Sharjah",
+      "curriculum": "Indian"
+    },
+    {
+      "id": 60,
+      "name": "OUR OWN HIGH SCHOOL AL WARQA DUBAI (BOYS)",
+      "slug": "our-own-high-school-al-warqa-dubai-boys",
+      "url": "https://www.threadsme.com/our-own-high-school-al-warqa-dubai-boys.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/OOS_4.jpg",
+      "emirate": "Dubai",
+      "curriculum": "Indian"
+    },
+    {
+      "id": 61,
+      "name": "OUR OWN INDIAN SCHOOL DUBAI",
+      "slug": "our-own-indian-school-dubai",
+      "url": "https://www.threadsme.com/our-own-indian-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/OOS_2.jpg",
+      "emirate": "Dubai",
+      "curriculum": "Indian"
+    },
+    {
+      "id": 62,
+      "name": "SCHOOL OF MODERN SKILS",
+      "slug": "school-of-modern-skils",
+      "url": "https://www.threadsme.com/school-of-modern-skils.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/SMS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 63,
+      "name": "SPRINGDALES SCHOOL DUBAI",
+      "slug": "springdales-school-dubai",
+      "url": "https://www.threadsme.com/springdales-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/SPDL.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 64,
+      "name": "THE CAMBRIDGE HIGH SCHOOL - ABU DHABI",
+      "slug": "the-cambridge-high-school-abu-dhabi",
+      "url": "https://www.threadsme.com/the-cambridge-high-school-abu-dhabi.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/CAM_5.jpg",
+      "emirate": "Abu Dhabi",
+      "curriculum": "British"
+    },
+    {
+      "id": 65,
+      "name": "The City School International (Sharjah)",
+      "slug": "the-city-school-international-sharjah",
+      "url": "https://www.threadsme.com/the-city-school-international-sharjah.html",
+      "hasLogo": false,
+      "logo": null,
+      "emirate": "Sharjah",
+      "curriculum": "British"
+    },
+    {
+      "id": 66,
+      "name": "The City School International Dubai",
+      "slug": "the-city-school-international-dubai",
+      "url": "https://www.threadsme.com/the-city-school-international-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/CITYL.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 67,
+      "name": "THE MILLENNIUM SCHOOL DUBAI",
+      "slug": "the-millennium-school-dubai",
+      "url": "https://www.threadsme.com/the-millennium-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/TMS.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 68,
+      "name": "THE WESTMINSTER SCHOOL - DUBAI",
+      "slug": "the-westminster-school-dubai",
+      "url": "https://www.threadsme.com/the-westminster-school-dubai.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/TWS_1.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 69,
+      "name": "THE WINCHESTER SCHOOL - JEBAL ALI",
+      "slug": "the-winchester-school-jebal-ali",
+      "url": "https://www.threadsme.com/the-winchester-school-jebal-ali.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WIN_2.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    },
+    {
+      "id": 70,
+      "name": "Wesgreen International School",
+      "slug": "wesgreen-international-school",
+      "url": "https://www.threadsme.com/wesgreen-international-school.html",
+      "hasLogo": true,
+      "logo": "https://www.threadsme.com/media/catalog/category/WGN.jpg",
+      "emirate": "Dubai",
+      "curriculum": "British"
+    }
+  ]
+}

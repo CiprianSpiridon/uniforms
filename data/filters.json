@@ -1,0 +1,25 @@
+{
+  "source": "Threads school page left-rail facets",
+  "filters": [
+    {
+      "facet": "GENDER",
+      "key": "gender",
+      "values": [
+        "BOYS",
+        "GIRLS",
+        "UNISEX"
+      ],
+      "note": "Unisex items are coded \"UX\" in product names."
+    },
+    {
+      "facet": "UNIFORM TYPE",
+      "key": "uniformType",
+      "values": [
+        "CORE UNIFORM",
+        "WINTER UNIFORM",
+        "PE"
+      ],
+      "note": "Core / Winter / PE are separate ranges and form a natural attach/upsell ladder."
+    }
+  ]
+}

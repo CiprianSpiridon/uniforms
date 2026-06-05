@@ -1,0 +1,71 @@
+{
+  "source": "Threads main navigation + supplementary categories",
+  "note": "Top-level merchandise lines beyond core uniforms, used to source cross-sell / upsell rails on the Mumzworld landing page.",
+  "productTypes": [
+    {
+      "name": "School Uniforms",
+      "key": "uniforms",
+      "url": "https://www.threadsme.com/onlineshop/",
+      "priceRangeAed": [
+        63,
+        105
+      ],
+      "role": "core",
+      "description": "School-specific Core / Winter / PE uniform per year level and gender. Primary product."
+    },
+    {
+      "name": "Backpacks & Bags",
+      "key": "bags",
+      "url": "https://www.threadsme.com/supplementary-category.html?cat=20956",
+      "priceRangeAed": [
+        93,
+        139
+      ],
+      "role": "cross-sell",
+      "description": "School bags 12/16/18 inch in multiple colours + generic backpacks. Highest-intent attach item."
+    },
+    {
+      "name": "Shoes",
+      "key": "shoes",
+      "url": "https://www.threadsme.com/supplementary-category.html?cat=20955",
+      "priceRangeAed": [],
+      "role": "cross-sell",
+      "description": "Supplementary shoes category. Empty/seasonal at time of crawl but a live slot."
+    },
+    {
+      "name": "Branded Lifestyle (Stanley)",
+      "key": "brands",
+      "url": "https://www.threadsme.com/brands.html",
+      "priceRangeAed": [
+        216,
+        270
+      ],
+      "role": "upsell",
+      "description": "Branded non-uniform merchandise — currently Stanley drinkware (Quencher tumblers, Ice Flow bottles). Premium AOV booster."
+    },
+    {
+      "name": "Stationery (B2B)",
+      "key": "stationery",
+      "url": "https://www.threadsme.com/stationery",
+      "priceRangeAed": [],
+      "role": "cross-sell",
+      "description": "Stationery / B2B supply (Magento category id 32445). Back-to-school list filler."
+    },
+    {
+      "name": "Pre-Book Fitting",
+      "key": "prebook",
+      "url": "https://eazyqadminpanel.ngrok.io/ThreadsOnlineBooking/",
+      "priceRangeAed": [],
+      "role": "service",
+      "description": "External EazyQ appointment system to reserve in-store fitting/collection slots for peak back-to-school."
+    },
+    {
+      "name": "Promotions",
+      "key": "promotions",
+      "url": "https://www.threadsme.com/promotions.html",
+      "priceRangeAed": [],
+      "role": "seasonal",
+      "description": "Seasonal offers hub (e.g. DSF specials). Surface time-bound discounts."
+    }
+  ]
+}

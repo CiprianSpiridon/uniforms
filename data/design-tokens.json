@@ -1,0 +1,129 @@
+{
+  "source": "mumzworld-nextjs repo: packages/tailwind-config/lib/shadcn-plugin.ts, apps/[locale]/layout.tsx, components/ProductCard/ProductCard.module.css",
+  "fonts": {
+    "latin": "Inter",
+    "arabic": "Rubik",
+    "loader": "next/font/google",
+    "baseTextColor": "#43454C"
+  },
+  "colors": {
+    "primary": "#E50056",
+    "primaryDarkBlue": "#004372",
+    "secondary": "#E50056",
+    "rose700": "#C30044",
+    "tertiaryRed": "#9C0037",
+    "accentDark": "#43454C",
+    "accentLight": "#F4EFE9",
+    "destructive": "#FF3B30",
+    "semantic": {
+      "positive": "#009246",
+      "positiveLight": "#E5F4EC",
+      "starRating": "#FDAA2D",
+      "notice": "#FC781E",
+      "noticeLight": "#FFF1E8",
+      "negative": "#FF3B30",
+      "negativeExtra": "#FB0000",
+      "negativeLight": "#FFECEB",
+      "informative": "#E5F1F8",
+      "primaryLight": "#EBF4FA",
+      "textWeak": "#555555",
+      "textDisabled": "#828282",
+      "red": "#FCF3F6"
+    },
+    "supportive": {
+      "greenBright": "#D4F4E3",
+      "blueLight": "#EDF5FB",
+      "magentaLight": "#FFE5EE"
+    },
+    "tertiary": {
+      "black": "#43454C",
+      "body": "#6B6D72",
+      "grey": "#95969E",
+      "lightGrey": "#E0E0E7",
+      "brightGrey": "#F4F4F6",
+      "lightExtra": "#FBFBFC",
+      "thickSeparators": "#F6F6F8",
+      "white": "#FFFFFF"
+    },
+    "imageTintBg": "#0517510d"
+  },
+  "fontSize": {
+    "xxs": "10px",
+    "xs": "11px",
+    "sm": "12px",
+    "base": "13px",
+    "md": "14px",
+    "lg": "16px",
+    "x": "18px",
+    "xl": "20px",
+    "xxl": "24px"
+  },
+  "lineHeight": {
+    "xxs": "12px",
+    "xs": "13px",
+    "sm": "16px",
+    "base": "18px",
+    "md": "19px",
+    "lg": "22px",
+    "xl": "26px",
+    "xxl": "30px"
+  },
+  "fontWeight": {
+    "normal": 400,
+    "medium": 500,
+    "semiBold": 600,
+    "bold": 700,
+    "extraBold": 800
+  },
+  "borderRadius": {
+    "none": "0",
+    "xs": "4px",
+    "sm": "8px",
+    "md": "12px",
+    "lg": "20px",
+    "xl": "44px",
+    "full": "100%"
+  },
+  "spacing": {
+    "none": "0",
+    "xxs": "2px",
+    "xs": "4px",
+    "sm": "6px",
+    "md": "8px",
+    "lg": "10px",
+    "xl": "12px",
+    "xxl": "20px",
+    "3xl": "24px",
+    "4xl": "28px",
+    "5xl": "32px",
+    "6xl": "44px"
+  },
+  "boxShadow": {
+    "subtle": "0px 1px 2px 0px #0000001A",
+    "elevated": "0px -2px 6px 0px #00000014",
+    "depressed": "0px 1px 4px 0px #0000001A",
+    "distant": "0px 4px 12px 0px #00000026"
+  },
+  "container": {
+    "center": true,
+    "padding": "1rem",
+    "maxWidth2xl": "1400px"
+  },
+  "productCard": {
+    "bg": "#FFFFFF",
+    "widthDesktop": "252px",
+    "imageBg": "#0517510d",
+    "imageHeight": {
+      "mobile": "172px",
+      "sm": "242px",
+      "lg": "294px"
+    },
+    "nameFontSize": {
+      "mobile": "12px",
+      "sm": "14px"
+    },
+    "nameClamp": 2,
+    "priceMinHeight": "36px",
+    "colorSwatchOutline": "#43454C"
+  }
+}
