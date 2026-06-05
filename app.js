@@ -8,6 +8,7 @@
   const SCHOOLS = D.schools || [];
   const YEARS = D.yearCategories || [];
   const UNIFORMS = D.uniformProducts || [];
+  const UNIFORMS_BY_SCHOOL = D.uniformsBySchool || {};
   const RAILS = D.crossSellRails || [];
 
   /* ---------- tiny helpers ---------- */
@@ -35,28 +36,32 @@
     }).join(' ').replace(/\bUae\b/g, 'UAE').replace(/\bFs\b/gi, 'FS').replace(/\bPe\b/g, 'PE');
   const schoolName = (s) => tc(s.name);
   const yearLabel = (y) => /^FS/i.test(y.name) ? y.name.toUpperCase().replace(/\s+/, ' ') : tc(y.name);
-  const COLOURS = { WHT: 'White', WHITE: 'White', NAVY: 'Navy', ORNG: 'Orange', ORANGE: 'Orange', BLU: 'Blue', BLUE: 'Blue', RED: 'Red', GRN: 'Green', GREEN: 'Green', BLK: 'Black', BLACK: 'Black', GREY: 'Grey', GRAY: 'Grey', MAROON: 'Maroon', BURGUNDY: 'Burgundy' };
+  const COLOURS = { WHT: 'White', WHITE: 'White', NAVY: 'Navy', NVY: 'Navy', ORNG: 'Orange', ORANGE: 'Orange', BLU: 'Blue', BLUE: 'Blue', RED: 'Red', GRN: 'Green', GREEN: 'Green', BLK: 'Black', BLACK: 'Black', GREY: 'Grey', GRAY: 'Grey', MAROON: 'Maroon', BURGUNDY: 'Burgundy', MINT: 'Mint', CREAM: 'Cream', BEIGE: 'Beige', SKY: 'Sky', YELLOW: 'Yellow', PINK: 'Pink', PURPLE: 'Purple' };
+  const STAGE2 = '(PRE\\s*-?\\s*KG|KG\\d?|FS\\s?\\d|GRADE\\s?\\d{1,2}|GR\\s?\\d{1,2}|YEAR\\s?\\d{1,2}|Y\\s?\\d{1,2})';
   function prettyName(raw) {
     let s = ' ' + String(raw).toUpperCase() + ' ';
-    s = s.replace(/^\s+[A-Z]{2,4}\s+/, ' ');               // school code prefix (ABS)
-    s = s.replace(/\bUX\b/g, ' ');                          // unisex code
-    s = s.replace(/\b(FS\s?\d|YEAR\s?\d{1,2}|Y\s?\d{1,2})\s*[-/]\s*(FS\s?\d|YEAR\s?\d{1,2}|Y?\s?\d{1,2})\b/g, ' ');
-    s = s.replace(/\b(FS\s?\d|Y\d{1,2})\b/g, ' ');
+    s = s.replace(/^\s+[A-Z]{2,4}\s+/, ' ');               // school code prefix (ABS / ABC / CAM…)
+    s = s.replace(/\bUX\b|\bUNISEX\b/g, ' ');              // unisex code
+    s = s.replace(new RegExp(STAGE2 + '\\s*[-/]\\s*' + STAGE2.replace('Y\\s?\\d{1,2}', 'Y?\\s?\\d{1,2}'), 'g'), ' '); // stage/grade ranges
+    s = s.replace(/\b(PRE\s*-?\s*KG|KG\d?|GRADE\s?\d{1,2}|GR\s?\d{1,2}|FS\d|Y\d{1,2})\b/g, ' '); // standalone stage tokens
     const colours = [];
     s = s.replace(/\b([A-Z]{2,6})\/([A-Z]{2,6})\b/g, (m, a, b) => { if (COLOURS[a] && COLOURS[b]) { colours.push(COLOURS[a] + '/' + COLOURS[b]); return ' '; } return m; });
     Object.keys(COLOURS).forEach((k) => { const re = new RegExp('\\b' + k + '\\b', 'g'); if (re.test(s)) { colours.push(COLOURS[k]); s = s.replace(re, ' '); } });
     let g = s.replace(/\s+/g, ' ').trim()
-      .replace(/SS BLOUSE/, 'Short-Sleeve Blouse').replace(/SS SHIRT/, 'Short-Sleeve Shirt')
+      .replace(/\bSS\b/g, 'Short-Sleeve').replace(/\bFS\b/g, 'Full-Sleeve').replace(/\b3\/4\b/g, '3/4-Sleeve')
       .replace(/TRACK PANTS/, 'Track Pants').replace(/PE POLO/, 'PE Polo').replace(/WINTER JACKET/, 'Winter Jacket')
-      .replace(/DIVIDED SKORT/, 'Divided Skort').replace(/\bPANTS\b/, 'Trousers').replace(/\bPOLO\b/, 'Polo Shirt')
-      .replace(/\bSHIRT\b/, 'Shirt').replace(/\bBLOUSE\b/, 'Blouse').replace(/\bSKORT\b/, 'Skort').replace(/\bSKIRT\b/, 'Skirt')
+      .replace(/DIVIDED SKORT/, 'Divided Skort').replace(/\bPANTS\b/, 'Trousers').replace(/\bTROUSERS?\b/, 'Trousers').replace(/\bTRSR\b/, 'Trousers')
+      .replace(/\bPOLO\b/, 'Polo Shirt').replace(/\bSHIRT\b/, 'Shirt').replace(/\bBLOUSE\b/, 'Blouse').replace(/\bSKORT\b/, 'Skort').replace(/\bSKIRT\b/, 'Skirt')
+      .replace(/\bPINAFORE\b/, 'Pinafore').replace(/\bSHORTS\b/, 'Shorts').replace(/\bDRESS\b/, 'Dress').replace(/\bJACKET\b/, 'Jacket').replace(/\bPULLOVER[S]?\b/, 'Pullover')
+      .replace(/\bSNR\b/, 'Senior').replace(/\bJNR\b/, 'Junior').replace(/\bCLSC\b/, 'Classic').replace(/\bLNG\b/, 'Long').replace(/\bPKT\b/, 'Pocket').replace(/\bEQP\b/, ' ').replace(/\bMID\b/, ' ')
       .replace(/\bGIRLS\b/, "Girls'").replace(/\bBOYS\b/, "Boys'");
-    g = g.split(' ').map((w) => /[a-z']/.test(w) ? w : (w.charAt(0) + w.slice(1).toLowerCase())).join(' ').replace(/\s+/g, ' ').trim().replace(/\bPe\b/g, 'PE');
+    g = g.split(' ').filter(Boolean).map((w) => /[a-z'\/-]/.test(w) ? w : (w.charAt(0) + w.slice(1).toLowerCase())).join(' ').replace(/\s+/g, ' ').trim().replace(/\bPe\b/g, 'PE');
     const colour = [...new Set(colours)].join(' / ');
     return colour ? `${g} — ${colour}` : g;
   }
   // Humanise raw uniform SKU names once at load (cross-sell items already have retail names).
   UNIFORMS.forEach((p) => { p.sku = p.sku || ''; p.name = prettyName(p.name); });
+  Object.values(UNIFORMS_BY_SCHOOL).forEach((arr) => arr.forEach((p) => { p.name = prettyName(p.name); }));
 
   /* ---------- state ---------- */
   const state = { school: null, year: null, gender: null, emirate: 'All', activeStep: 'school', theme: null, cart: new Map(), wish: new Set() };
@@ -388,8 +393,9 @@
   // rail merchandising order (attach-rate / relevance)
   const RAIL_ORDER = ['lunch-hydration', 'backpacks-bags', 'shoes-socks', 'name-labels', 'stationery-supplies', 'books-learning', 'health-hygiene', 'period-care'];
 
+  function schoolPool() { const su = state.school && UNIFORMS_BY_SCHOOL[state.school.slug]; return (su && su.length) ? su : UNIFORMS; }
   function uniformsForSelection() {
-    return UNIFORMS.filter((p) => matchesYear(p.years) && matchesGender(p.gender));
+    return schoolPool().filter((p) => matchesYear(p.years) && matchesGender(p.gender));
   }
 
   function renderShop() {
@@ -419,10 +425,11 @@
   let bundleDefs = [];
   function renderBundles() {
     const ym = (p) => matchesYear(p.years) && matchesGender(p.gender);
-    const core = UNIFORMS.filter((p) => p.uniformType === 'CORE UNIFORM' && ym(p));
-    const peAll = UNIFORMS.filter((p) => p.uniformType === 'PE' && ym(p));
+    const POOL = schoolPool();
+    const core = POOL.filter((p) => p.uniformType === 'CORE UNIFORM' && ym(p));
+    const peAll = POOL.filter((p) => p.uniformType === 'PE' && ym(p));
     const pe = dedupBase(peAll);          // one PE polo (not 4 colourways) + track bottoms
-    const winter = dedupBase(UNIFORMS.filter((p) => p.uniformType === 'WINTER UNIFORM' && ym(p)));
+    const winter = dedupBase(POOL.filter((p) => p.uniformType === 'WINTER UNIFORM' && ym(p)));
     const rails = activeRails();
     const railItems = (k) => (rails.find((r) => r.key === k) || { items: [] }).items;
     const lunch = railItems('lunch-hydration'), labels = railItems('name-labels'), bags = railItems('backpacks-bags'), stat = railItems('stationery-supplies');
