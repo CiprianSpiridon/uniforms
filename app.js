@@ -427,8 +427,10 @@
     $('#bundlePicks').innerHTML = bundleDefs.map((d, i) => {
       const pr = priceOf(d);
       const list = d.items.map((it) => esc(it.name.split(' - ')[0].split(',')[0].replace(/^ABS\s+(UX\s+)?/i, ''))).slice(0, 3).join(' · ');
+      const n = Math.min(d.items.length, 4);
+      const extra = d.items.length > 4 ? `<span class="pick__more">+${d.items.length - 4}</span>` : '';
       return `<article class="pick">
-        <div class="pick__media">${d.items.slice(0, 4).map(thumb).join('')}<span class="pick__save">Save ${money(pr.save)}</span></div>
+        <div class="pick__media pick__media--${n}">${d.items.slice(0, 4).map(thumb).join('')}${extra}<span class="pick__save">Save ${money(pr.save)}</span></div>
         <div class="pick__info">
           <span class="pick__tag">${esc(d.tag)}</span>
           <h3 class="pick__name">${esc(d.name)}</h3>
