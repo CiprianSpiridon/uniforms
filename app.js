@@ -366,8 +366,6 @@
       <span class="ctxbanner__crest">${crestMarkup(s)}</span>
       <span class="ctxbanner__meta"><strong>${esc(s.name)}</strong><span>${esc(state.year.name)} · ${cap(state.gender)} · ${esc(s.emirate)}</span></span>
       <button class="ctxbanner__change" data-goto="school">Start over</button>`;
-    $('#uniformViewAll').href = s.url;
-    $('#uniformViewAll').textContent = 'View all uniform at ' + s.name.split(' - ')[0];
     $('#uniformBannerTitle').textContent = `${state.year.name} ${cap(state.gender)} uniform`;
 
     renderBundles();
@@ -427,10 +425,12 @@
     $('#bundlePicks').innerHTML = bundleDefs.map((d, i) => {
       const pr = priceOf(d);
       const list = d.items.map((it) => esc(it.name.split(' - ')[0].split(',')[0].replace(/^ABS\s+(UX\s+)?/i, ''))).slice(0, 3).join(' · ');
-      const n = Math.min(d.items.length, 4);
-      const extra = d.items.length > 4 ? `<span class="pick__more">+${d.items.length - 4}</span>` : '';
+      const MAX = 4;
+      const thumbsHtml = d.items.length > MAX
+        ? d.items.slice(0, 3).map(thumb).join('') + `<span class="pick__moretile">+${d.items.length - 3}<small>more</small></span>`
+        : d.items.map(thumb).join('');
       return `<article class="pick">
-        <div class="pick__media pick__media--${n}">${d.items.slice(0, 4).map(thumb).join('')}${extra}<span class="pick__save">Save ${money(pr.save)}</span></div>
+        <div class="pick__media">${thumbsHtml}<span class="pick__save">Save ${money(pr.save)}</span></div>
         <div class="pick__info">
           <span class="pick__tag">${esc(d.tag)}</span>
           <h3 class="pick__name">${esc(d.name)}</h3>
